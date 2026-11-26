@@ -3,8 +3,8 @@
     "name": "Mohammed Jihad",
     "initials": "MJ",
     "role": "Creative Video Editor & Motion Designer",
-    "line1": "Every frame",
-    "line2": "earns its place",
+    "line1": "",
+    "line2": "",
     "tagline": "I edit videos and design motion graphics with tight pacing, rich color and clean sound.",
     "statement": "Good editing is invisible. You only notice that you could not look away.",
     "bio": "I'm Mohammed Jihad, a video editor and motion designer with 2 years of experience.",
@@ -157,6 +157,7 @@
     "color": true,
     "services": true,
     "process": true,
-    "portrait": false
+    "portrait": false,
+    "stats": true
   }
 }
