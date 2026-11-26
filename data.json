@@ -1,0 +1,140 @@
+{
+  "profile": {
+    "name": "Mohammed Jihad",
+    "initials": "MJ",
+    "role": "Video Editor & Motion Designer",
+    "line1": "Every frame",
+    "line2": "earns its place",
+    "tagline": "I edit videos and design motion graphics with tight pacing, rich color and clean sound.",
+    "statement": "Good editing is invisible. You only notice that you could not look away.",
+    "bio": "I'm Mohammed Jihad, a video editor and motion designer with 2 years of experience.",
+    "photo": "",
+    "showreel": "",
+    "email": "mohammedjihad370@gmail.com"
+  },
+  "socials": [
+    {
+      "label": "Instagram",
+      "text": "@mohammed_jihad51",
+      "url": "https://www.instagram.com/mohammed_jihad51/"
+    },
+    {
+      "label": "Facebook",
+      "text": "Mohammed Jihad",
+      "url": "https://www.facebook.com/profile.php?id=61576366893671"
+    }
+  ],
+  "types": [
+    {
+      "name": "Commercial",
+      "image": "product"
+    },
+    {
+      "name": "YouTube",
+      "image": "mic"
+    },
+    {
+      "name": "Reels & Shorts",
+      "image": "city"
+    },
+    {
+      "name": "Motion Graphics",
+      "image": "motion"
+    },
+    {
+      "name": "Music Video",
+      "image": "stage"
+    },
+    {
+      "name": "Wedding",
+      "image": "rings"
+    },
+    {
+      "name": "Documentary",
+      "image": "dunes"
+    }
+  ],
+  "projects": [],
+  "services": [
+    {
+      "name": "Commercials",
+      "text": "Brand films, product ads and campaign cut-downs built to hold attention.",
+      "image": "product"
+    },
+    {
+      "name": "YouTube & Podcasts",
+      "text": "Story-first pacing, multicam, captions and chapters that keep viewers watching.",
+      "image": "mic"
+    },
+    {
+      "name": "Reels & Shorts",
+      "text": "Fast vertical edits with a strong hook and animated subtitles.",
+      "image": "city"
+    },
+    {
+      "name": "Motion Graphics",
+      "text": "Titles, logo animation, lower thirds and explainer visuals.",
+      "image": "motion"
+    },
+    {
+      "name": "Weddings & Events",
+      "text": "Highlight films and full edits that bring the day back.",
+      "image": "rings"
+    },
+    {
+      "name": "Color & Sound",
+      "text": "Grading, audio cleanup, sound design and final mix.",
+      "image": "stage"
+    }
+  ],
+  "steps": [
+    {
+      "name": "Discovery",
+      "text": "We talk through your goal, audience, references and deadline.",
+      "result": "Creative brief"
+    },
+    {
+      "name": "Organise",
+      "text": "Footage is backed up, sorted, synced and selected.",
+      "result": "Selects"
+    },
+    {
+      "name": "Story cut",
+      "text": "The structure and rhythm come together.",
+      "result": "First draft"
+    },
+    {
+      "name": "Refine",
+      "text": "Your notes shape the pacing, graphics and transitions.",
+      "result": "Revised cut"
+    },
+    {
+      "name": "Color & sound",
+      "text": "The look is graded and the audio is cleaned, designed and mixed.",
+      "result": "Picture lock and mix"
+    },
+    {
+      "name": "Delivery",
+      "text": "You receive final files sized for every platform.",
+      "result": "Master exports"
+    }
+  ],
+  "tools": [],
+  "stats": [
+    {
+      "value": "2",
+      "label": "Years of experience"
+    }
+  ],
+  "experience": [],
+  "quotes": [],
+  "grade": {
+    "before": "",
+    "after": ""
+  },
+  "show": {
+    "color": true,
+    "services": true,
+    "process": true
+  }
+}

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com">
+<title>Portfolio Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Hind+Siliguri:wght@400;500;600&family=Inter:wght@400;600&display=swap">
+<style>
+:root{--ink:#07070a;--coal:#121218;--coal2:#1a1a22;--paper:#f5f0e8;--muted:#a29d97;--line:rgba(245,240,232,.14);--amber:#ff8a3d;--teal:#3fd5df;--bad:#ff6b6b;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ink);color:var(--paper);font:400 16px/1.6 Inter,"Hind Siliguri",system-ui,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:24px 16px 140px}
+h1{font:400 2.4rem/1.1 Anton,Impact,sans-serif;text-transform:uppercase;margin:0}
+h2{font-size:1.15rem;margin:0}
+a{color:var(--teal)}
+header{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:22px}
+button,.button{font:600 .92rem Inter,"Hind Siliguri",sans-serif;border:1px solid var(--line);background:var(--coal2);color:var(--paper);border-radius:99px;padding:9px 18px;cursor:pointer;text-decoration:none}
+button:hover{border-color:var(--paper)}
+button:disabled{opacity:.5;cursor:default}
+button.hot{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+button.small{padding:5px 12px;font-size:.8rem}
+button.danger{color:var(--bad)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.box{background:var(--coal);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:14px;margin-bottom:18px;min-width:0}
+label{display:grid;gap:5px;font-size:.85rem;color:var(--muted);min-width:0}
+label.check{display:flex;gap:10px;align-items:center}
+input,select,textarea{font:400 1rem Inter,"Hind Siliguri",sans-serif;background:var(--ink);color:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--amber)}
+textarea{min-height:90px;resize:vertical}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:620px){.two{grid-template-columns:minmax(0,1fr)}}
+.muted{color:var(--muted);font-size:.87rem;margin:0}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.tabs button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:var(--ink)}
+.item{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.item img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:var(--ink)}
+.item b{display:block;overflow-wrap:anywhere}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+@media (max-width:620px){.item{grid-template-columns:72px minmax(0,1fr)}.item img{width:72px;height:48px}.acts{grid-column:1/-1;justify-content:flex-start}}
+.row{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(18,18,24,.96);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar div{max-width:848px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+#status{margin:0;font-size:.9rem;flex:1;min-width:200px}
+#status.bad{color:var(--bad)} #status.good{color:#5ee28a}
+ol{margin:0;padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Portfolio Admin</h1><div class="acts"><a class="button" href="./" target="_blank" rel="noopener">সাইট দেখুন</a><button id="logout" type="button" hidden>লগ আউট</button></div></header>
+
+  <form id="login" class="box">
+    <h2>GitHub দিয়ে লগইন</h2>
+    <p class="muted">টোকেনটা শুধু এই ব্রাউজার থেকে api.github.com-এ যায়। প্রথমবার টোকেন বানাতে:</p>
+    <ol class="muted">
+      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub-এ Fine-grained token</a> পেজ খুলুন</li>
+      <li>Repository access: <b>Only select repositories</b> থেকে শুধু পোর্টফোলিওর রিপো বেছে নিন</li>
+      <li>Permissions: <b>Contents</b> = <b>Read and write</b></li>
+      <li>মেয়াদ দিয়ে Generate করুন, তারপর টোকেন কপি করে নিচে দিন</li>
+    </ol>
+    <div class="two">
+      <label for="owner">GitHub username<input id="owner" required></label>
+      <label for="repo">রিপোর নাম<input id="repo" required></label>
+    </div>
+    <label for="branch">ব্রাঞ্চ<input id="branch" value="main" required></label>
+    <label for="token">Access token<input id="token" type="password" autocomplete="off" required></label>
+    <label class="check" for="remember"><input type="checkbox" id="remember"> এই ডিভাইসে মনে রাখো (শুধু নিজের কম্পিউটারে)</label>
+    <div class="acts" style="justify-content:flex-start"><button class="hot" type="submit">লগইন</button><button type="button" id="offline">টোকেন ছাড়া সম্পাদনা</button></div>
+  </form>
+
+  <main id="app" hidden>
+    <div class="tabs" id="tabs"></div>
+    <div id="panel"></div>
+  </main>
+</div>
+<div class="bar"><div><p id="status" role="status">লগইন করুন।</p><button type="button" id="download" hidden>data.json ডাউনলোড</button><button type="button" class="hot" id="publish" hidden>পাবলিশ করো</button></div></div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const btn = (text, fn, cls="small") => { const b = el("button",cls,text); b.type = "button"; b.onclick = fn; return b; };
+const KEY = "portfolio-admin";
+let D = null, auth = null, sha = null, dirty = false, tab = "projects", editing = null, busy = false;
+
+const say = (t, kind="") => { $("#status").textContent = t; $("#status").className = kind; };
+const changed = () => { dirty = true; say(auth ? "পরিবর্তন হয়েছে। সাইটে দেখাতে “পাবলিশ করো” চাপুন।" : "পরিবর্তন হয়েছে। data.json ডাউনলোড করে GitHub-এ আপলোড করুন।"); };
+addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- GitHub ---------- */
+const guessOwner = location.hostname.endsWith(".github.io") ? location.hostname.replace(".github.io","") : "mohammedjihad0";
+const first = location.pathname.split("/").filter(Boolean)[0];
+const guessRepo = location.hostname.endsWith(".github.io") ? (first && first !== "admin.html" ? first : location.hostname) : "mohammedjihad.github.io";
+$("#owner").value = guessOwner; $("#repo").value = guessRepo;
+
+async function gh(path, options={}){
+  const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(auth.owner)}/${encodeURIComponent(auth.repo)}${path}`, {
+    ...options, cache:"no-store",
+    headers:{Authorization:`Bearer ${auth.token}`, Accept:"application/vnd.github+json", ...(options.body ? {"Content-Type":"application/json"} : {})}
+  });
+  if (!r.ok) {
+    const why = {401:"টোকেন ভুল বা মেয়াদ শেষ।",403:"টোকেনের অনুমতি নেই। Contents: Read and write দিন।",404:"রিপো, ব্রাঞ্চ বা ফাইল পাওয়া যায়নি।",409:"ফাইলটা অন্য কোথাও থেকে বদলেছে।",422:"GitHub অনুরোধটা নেয়নি।"}[r.status] || "GitHub সমস্যা।";
+    const err = new Error(`${why} (${r.status})`); err.status = r.status; throw err;
+  }
+  return r.json();
+}
+const toB64 = text => { const bytes = new TextEncoder().encode(text); let s = ""; bytes.forEach(b => s += String.fromCharCode(b)); return btoa(s); };
+const fromB64 = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g,"")), c => c.charCodeAt(0)));
+
+function normalise(d){
+  if (!d || typeof d !== "object" || !d.profile) throw new Error("data.json-এর গঠন ঠিক নেই।");
+  ["socials","types","projects","services","steps","tools","stats","experience","quotes"].forEach(k => { if (!Array.isArray(d[k])) d[k] = []; });
+  d.grade ||= {before:"",after:""}; d.show ||= {};
+  return d;
+}
+async function login(creds, remember){
+  auth = creds; say("সংযোগ হচ্ছে…");
+  try {
+    const f = await gh(`/contents/data.json?ref=${encodeURIComponent(auth.branch)}`);
+    sha = f.sha;
+    const content = f.content || (await gh(`/git/blobs/${f.sha}`)).content; /* files over 1 MB */
+    D = normalise(JSON.parse(fromB64(content)));
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify(auth));
+      if (remember) localStorage.setItem(KEY, JSON.stringify(auth)); else localStorage.removeItem(KEY);
+    } catch (e) {}
+    $("#token").value = ""; start(); say("লগইন হয়েছে।","good");
+  } catch (err) { auth = null; say(err.message,"bad"); }
+}
+$("#login").onsubmit = e => { e.preventDefault(); login({owner:$("#owner").value.trim(), repo:$("#repo").value.trim(), branch:$("#branch").value.trim(), token:$("#token").value.trim()}, $("#remember").checked); };
+$("#offline").onclick = async () => {
+  try { const r = await fetch("data.json",{cache:"no-store"}); if (!r.ok) throw new Error(); D = normalise(await r.json()); auth = null; start(); say("টোকেন ছাড়া মোড। শেষে data.json ডাউনলোড করে আপলোড করুন।"); }
+  catch (e) { say("data.json পড়া যায়নি। পেজটা হোস্ট করা সাইট থেকে খুলুন।","bad"); }
+};
+$("#logout").onclick = () => {
+  if (dirty && $("#logout").dataset.sure !== "1") { $("#logout").dataset.sure = "1"; say("পাবলিশ না করা পরিবর্তন আছে। বের হতে আবার “লগ আউট” চাপুন।","bad"); return; }
+  try { sessionStorage.removeItem(KEY); localStorage.removeItem(KEY); } catch (e) {}
+  dirty = false; location.reload();
+};
+function start(){
+  $("#login").hidden = true; $("#app").hidden = false; $("#logout").hidden = false;
+  $("#publish").hidden = !auth; $("#download").hidden = false; render();
+}
+
+/* Uploaded pictures stay as data URIs until publish, then become files in assets/uploads/ */
+async function publish(){
+  if (busy) return; busy = true; $("#publish").disabled = true;
+  try {
+    const copy = JSON.parse(JSON.stringify(D)), slots = [];
+    (function walk(o){ Object.keys(o).forEach(k => { const v = o[k]; if (typeof v === "string" && v.startsWith("data:image/jpeg;base64,")) slots.push([o,k,v]); else if (v && typeof v === "object") walk(v); }); })(copy);
+    const done = new Map();
+    for (let i=0; i<slots.length; i++) {
+      const [o,k,v] = slots[i];
+      if (!done.has(v)) {
+        say(`ছবি আপলোড হচ্ছে ${i+1}/${slots.length}…`);
+        const path = `assets/uploads/${Date.now().toString(36)}-${i}.jpg`;
+        await gh(`/contents/${path}`, {method:"PUT", body:JSON.stringify({message:"Upload portfolio image", content:v.split(",")[1], branch:auth.branch})});
+        done.set(v, path);
+      }
+      o[k] = done.get(v);
+    }
+    say("সেভ হচ্ছে…");
+    const res = await gh(`/contents/data.json`, {method:"PUT", body:JSON.stringify({message:"Update portfolio content", content:toB64(JSON.stringify(copy,null,2)+"\n"), sha, branch:auth.branch})});
+    sha = res.content.sha;
+    /* keep local previews working while GitHub Pages rebuilds */
+    dirty = false; say("পাবলিশ হয়েছে। ১–২ মিনিট পরে সাইট রিফ্রেশ করুন।","good");
+    previews = new Map([...previews, ...[...done].map(([data,path]) => [path,data])]);
+    D = copy; render();
+  } catch (err) {
+    say(err.status === 409 ? "অন্য জায়গা থেকে data.json বদলেছে। “data.json ডাউনলোড” দিয়ে ব্যাকআপ রেখে পেজ রিলোড করুন।" : err.message || "পাবলিশ হয়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।","bad");
+  } finally { busy = false; $("#publish").disabled = false; }
+}
+let previews = new Map();
+$("#publish").onclick = publish;
+$("#download").onclick = () => {
+  const a = el("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:"application/json"})); a.download = "data.json";
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  if (!auth) dirty = false;
+  say("data.json ডাউনলোড হয়েছে।","good");
+};
+
+/* ---------- form helpers ---------- */
+const pic = k => !k ? "" : previews.get(k) || (/^(https?:|data:|assets\/)/.test(k) ? k : `assets/${k}.jpg`);
+const ytThumb = u => { const m = (u||"").match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` : ""; };
+function field(label, value, onInput, opt={}){
+  const l = el("label","",label); let i;
+  if (opt.options) { i = el("select"); opt.options.forEach(([v,t]) => { const o = el("option","",t); o.value = v; i.append(o); }); }
+  else if (opt.area) i = el("textarea");
+  else { i = el("input"); i.type = opt.type || "text"; }
+  i.value = value || ""; if (opt.hint) i.placeholder = opt.hint;
+  i.addEventListener(opt.options ? "change" : "input", () => onInput(i.value));
+  l.append(i); return l;
+}
+function resize(file, max){
+  return new Promise((ok, no) => {
+    const url = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { const k = Math.min(1, max/Math.max(im.width,im.height)), c = el("canvas"); c.width = Math.round(im.width*k); c.height = Math.round(im.height*k);
+      const g = c.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0,0,c.width,c.height); g.drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg",.84)); };
+    im.onerror = () => { URL.revokeObjectURL(url); no(); };
+    im.src = url;
+  });
+}
+function picture(label, obj, key){
+  const box = el("div","row"), l = el("label","",label), i = el("input"); i.type = "file"; i.accept = "image/*";
+  const view = el("img"); view.alt = ""; view.style.cssText = "max-width:220px;max-height:150px;border-radius:10px";
+  const clear = btn("ছবি সরাও", () => { obj[key] = ""; paint(); changed(); }, "small danger");
+  const paint = () => { view.hidden = clear.hidden = !obj[key]; if (obj[key]) view.src = pic(obj[key]); };
+  i.onchange = async () => { if (!i.files[0]) return; try { obj[key] = await resize(i.files[0], 1600); paint(); changed(); } catch (e) { say("ছবিটা পড়া যায়নি। JPG বা PNG দিন।","bad"); } };
+  clear.style.justifySelf = "start"; l.append(i); box.append(l, view, clear); paint(); return box;
+}
+function move(arr, i, by){ const j = i+by; if (j<0 || j>=arr.length) return; [arr[i],arr[j]] = [arr[j],arr[i]]; changed(); render(); }
+function box(title, note){ const b = el("div","box"); b.append(el("h2","",title)); if (note) b.append(el("p","muted",note)); return b; }
+function rows(title, key, fields, addText, note){
+  const b = box(title, note), arr = D[key];
+  arr.forEach((item,i) => {
+    const r = el("div","row");
+    fields.forEach(([k,label,opt]) => r.append(field(label, item[k], v => { item[k] = v; changed(); }, opt)));
+    if (key === "services") r.append(picture("কভার ছবি", item, "image"));
+    const a = el("div","acts"); a.append(btn("↑", () => move(arr,i,-1)), btn("↓", () => move(arr,i,1)), btn("মুছো", () => { arr.splice(i,1); changed(); render(); }, "small danger"));
+    r.append(a); b.append(r);
+  });
+  const add = btn(addText, () => { arr.push(Object.fromEntries(fields.map(f => [f[0],""]))); changed(); render(); }); add.style.justifySelf = "start"; b.append(add); return b;
+}
+
+/* ---------- tabs ---------- */
+function projects(panel){
+  const isNew = !editing || editing.index == null;
+  if (!editing) editing = {index:null, p:{title:"",type:D.types[0]?.name || "",shape:"wide",video:"",image:"",client:"",role:"",about:""}};
+  const p = editing.p, f = el("form","box");
+  f.append(el("h2","",isNew ? "নতুন প্রজেক্ট যোগ করুন" : "প্রজেক্ট সম্পাদনা"));
+  const a = el("div","two");
+  a.append(field("প্রজেক্টের নাম *", p.title, v => p.title = v), field("ধরন *", p.type, v => p.type = v, {options:D.types.map(t => [t.name,t.name])}));
+  const b = el("div","two");
+  b.append(field("ভিডিও লিংক *", p.video, v => p.video = v, {type:"url",hint:"YouTube, Vimeo, Drive, Facebook বা Instagram লিংক"}), field("ভিডিওর আকার", p.shape, v => p.shape = v, {options:[["wide","আড়াআড়ি (16:9)"],["vertical","লম্বা (Reels / Shorts)"]]}));
+  const c = el("div","two");
+  c.append(field("ক্লায়েন্ট", p.client, v => p.client = v), field("আপনার ভূমিকা", p.role, v => p.role = v, {hint:"Edit, motion, color"}));
+  f.append(a, b, c, field("ছোট বর্ণনা", p.about, v => p.about = v, {area:true}), picture("থাম্বনেইল (না দিলে YouTube থেকে বা ধরনের ছবি বসবে)", p, "image"));
+  const acts = el("div","acts"); acts.style.justifyContent = "flex-start";
+  const save = el("button","hot",isNew ? "তালিকায় যোগ করো" : "পরিবর্তন রাখো"); save.type = "submit"; acts.append(save);
+  if (!isNew) acts.append(btn("বাতিল", () => { editing = null; render(); }, ""));
+  f.append(acts);
+  f.onsubmit = e => {
+    e.preventDefault();
+    p.title = p.title.trim(); p.video = p.video.trim();
+    if (!p.title || !p.type || !/^https?:\/\/\S+$/i.test(p.video)) return say("নাম, ধরন আর https:// দিয়ে শুরু ভিডিও লিংক দিন।","bad");
+    if (editing.index == null) D.projects.unshift(p); else D.projects[editing.index] = p;
+    editing = null; changed(); render();
+  };
+  panel.append(f);
+  const l = box(`আপনার প্রজেক্ট (${D.projects.length})`, D.projects.length ? "উপরের প্রজেক্ট সাইটে আগে দেখাবে।" : "এখনো কোনো প্রজেক্ট নেই। উপরের ফর্ম থেকে প্রথমটা যোগ করুন।");
+  D.projects.forEach((x,i) => {
+    const r = el("div","item"), im = el("img"); im.alt = ""; im.src = pic(x.image || ytThumb(x.video) || D.types.find(t => t.name === x.type)?.image || "motion");
+    const t = el("div"); t.append(el("b","",x.title), el("span","muted",`${x.type} · ${x.shape === "vertical" ? "লম্বা" : "আড়াআড়ি"}`));
+    const acts = el("div","acts");
+    acts.append(btn("↑", () => { editing = null; move(D.projects,i,-1); }), btn("↓", () => { editing = null; move(D.projects,i,1); }),
+      btn("সম্পাদনা", () => { editing = {index:i, p:{...x}}; render(); scrollTo(0,0); }),
+      btn("মুছো", e => { const k = e.currentTarget; if (k.dataset.sure) { D.projects.splice(i,1); editing = null; changed(); render(); } else { k.dataset.sure = "1"; k.textContent = "নিশ্চিত?"; } }, "small danger"));
+    r.append(im,t,acts); l.append(r);
+  });
+  panel.append(l);
+}
+function profile(panel){
+  const P = D.profile, b = box("পরিচিতি");
+  [["name","নাম"],["initials","লোগোর অক্ষর"],["role","পদবি"],["line1","হেডলাইন, প্রথম লাইন"],["line2","হেডলাইন, দ্বিতীয় লাইন"],["tagline","হেডলাইনের নিচের লেখা",{area:true}],["statement","About-এর বড় উক্তি",{area:true}],["bio","নিজের সম্পর্কে",{area:true}],["email","ইমেইল",{type:"email"}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}]]
+    .forEach(([k,label,opt]) => b.append(field(label, P[k], v => { P[k] = v; changed(); }, opt)));
+  b.append(picture("আপনার ছবি (লম্বা, 4:5 হলে ভালো)", P, "photo"));
+  panel.append(b, rows("সোশ্যাল লিংক","socials",[["label","নাম (যেমন YouTube)"],["text","যে লেখা দেখাবে"],["url","লিংক"]],"+ লিংক যোগ করো"));
+}
+function types(panel){
+  const b = box("কাজের ধরন","এখানে যোগ করা ধরন প্রজেক্ট ফর্মের তালিকায় আসবে। ব্যবহৃত ধরন মুছতে হলে আগে সেই প্রজেক্টগুলোর ধরন বদলান।");
+  D.types.forEach((t,i) => {
+    const r = el("div","row"), name = field("ধরনের নাম", t.name, () => {});
+    name.querySelector("input").onchange = e => {
+      const v = e.target.value.trim();
+      if (!v || D.types.some(o => o !== t && o.name === v)) { e.target.value = t.name; return say("নাম ফাঁকা বা একই নাম দুইবার হতে পারবে না।","bad"); }
+      D.projects.forEach(p => { if (p.type === t.name) p.type = v; }); t.name = v; editing = null; changed();
+    };
+    const a = el("div","acts"); a.append(btn("↑", () => move(D.types,i,-1)), btn("↓", () => move(D.types,i,1)), btn("মুছো", () => {
+      if (D.projects.some(p => p.type === t.name)) return say("এই ধরনে প্রজেক্ট আছে, তাই মোছা যাবে না।","bad");
+      D.types.splice(i,1); editing = null; changed(); render(); }, "small danger"));
+    r.append(name, picture("কভার ছবি", t, "image"), a); b.append(r);
+  });
+  const add = btn("+ নতুন ধরন", () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); editing = null; changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
+}
+function sections(panel){
+  const v = box("কোন সেকশন দেখাবে");
+  [["color","Color grade"],["services","Services"],["process","Process"]].forEach(([k,t]) => {
+    const l = el("label","check"), c = el("input"); c.type = "checkbox"; c.checked = D.show[k] !== false; c.onchange = () => { D.show[k] = c.checked; changed(); }; l.append(c, document.createTextNode(t)); v.append(l);
+  });
+  const g = box("কালার গ্রেডিং ফ্রেম","একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে নমুনা ফ্রেম দেখাবে।");
+  g.append(picture("আগে (flat)", D.grade, "before"), picture("পরে (graded)", D.grade, "after"));
+  panel.append(v, g,
+    rows("সার্ভিস","services",[["name","নাম"],["text","বর্ণনা",{area:true}]],"+ সার্ভিস"),
+    rows("প্রসেস","steps",[["name","ধাপ"],["text","বর্ণনা",{area:true}],["result","ক্লায়েন্ট যা পায়"]],"+ ধাপ"),
+    rows("সফটওয়্যার","tools",[["name","নাম"],["use","কী কাজে"]],"+ সফটওয়্যার"),
+    rows("পরিসংখ্যান","stats",[["value","সংখ্যা"],["label","কিসের"]],"+ সংখ্যা"),
+    rows("অভিজ্ঞতা","experience",[["years","সময়"],["title","পদ বা কোর্স"],["place","প্রতিষ্ঠান"]],"+ অভিজ্ঞতা"),
+    rows("ক্লায়েন্ট ফিডব্যাক","quotes",[["text","ক্লায়েন্টের কথা",{area:true}],["who","নাম ও পরিচয়"]],"+ ফিডব্যাক","শুধু আসল ক্লায়েন্টের কথা দিন।"));
+}
+const TABS = [["projects","প্রজেক্ট",projects],["profile","পরিচিতি",profile],["types","কাজের ধরন",types],["sections","অন্যান্য সেকশন",sections]];
+function render(){
+  $("#tabs").replaceChildren(...TABS.map(([k,t]) => { const b = btn(t, () => { tab = k; render(); }, ""); b.setAttribute("aria-pressed", tab===k); return b; }));
+  const panel = $("#panel"), y = scrollY; panel.replaceChildren(); TABS.find(t => t[0] === tab)[2](panel); scrollTo(0,y);
+}
+
+let saved = null;
+try { saved = JSON.parse(sessionStorage.getItem(KEY) || localStorage.getItem(KEY)); } catch (e) {}
+if (saved && saved.token) { $("#owner").value = saved.owner; $("#repo").value = saved.repo; $("#branch").value = saved.branch; $("#remember").checked = !!(function(){ try { return localStorage.getItem(KEY); } catch (e) { return null; } })(); login(saved, $("#remember").checked); }
+})();
+</script>
+</body>
+</html>
