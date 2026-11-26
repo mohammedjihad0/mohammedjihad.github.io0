@@ -47,6 +47,14 @@ h1,h2,h3{font-weight:600;line-height:1.05;letter-spacing:-.015em;text-wrap:balan
 .hero{position:relative;isolation:isolate;overflow:hidden}
 .hero .wrap{display:grid;gap:clamp(44px,6vw,76px);padding-block:clamp(48px,8vw,100px) clamp(110px,13vw,180px)}
 .hero .swirl{bottom:0;height:170px}
+.corner{position:absolute;left:-230px;top:-230px;width:480px;height:480px;border-radius:50%;background:radial-gradient(closest-side,rgba(139,92,246,.6),rgba(109,40,217,.18) 55%,transparent);pointer-events:none;z-index:-1}
+.hsoc{justify-self:center;display:flex;gap:12px;margin-top:-34px}
+.hsoc a{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;color:var(--text);transition:color .2s,background .2s}
+.hsoc a:hover{color:var(--white);background:var(--royal)}
+.hsoc svg{width:21px;height:21px;fill:currentColor}
+@media (min-width:1000px){.hsoc{position:absolute;left:22px;bottom:max(30px,calc(100% - 100vh + 96px));flex-direction:column;margin:0;gap:6px}}
+/* held back until the opening starts, so nothing flashes first */
+.intro .cut,.intro .me,.intro .what,.intro .copy,.intro .hsoc,.intro .corner{opacity:0}
 .who{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(16px,3vw,44px)}
 .who p{display:grid;gap:6px}
 .me{justify-self:end}.what{justify-self:start}
@@ -173,8 +181,9 @@ dialog::backdrop{background:rgba(4,2,9,.9)}
 #progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--royal),var(--lav))}
 .glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px;border-radius:50%;background:radial-gradient(closest-side,rgba(124,58,237,.2),transparent);pointer-events:none;z-index:-1;opacity:0;transition:opacity .4s}
 .ring-c{position:fixed;left:0;top:0;z-index:30;pointer-events:none;opacity:0;transition:opacity .3s}
-.ring-c i{display:block;width:34px;height:34px;margin:-17px;border-radius:50%;border:2px solid var(--lav);box-shadow:0 0 18px rgba(139,92,246,.75),inset 0 0 10px rgba(139,92,246,.45);transition:width .25s,height .25s,margin .25s,background .25s}
-.ring-c.over i{width:58px;height:58px;margin:-29px;background:rgba(139,92,246,.2)}
+.ring-c{mix-blend-mode:difference}
+.ring-c i{display:block;width:30px;height:30px;margin:-15px;border-radius:50%;background:var(--lav);box-shadow:0 0 16px 3px rgba(167,139,250,.65);transition:width .25s,height .25s,margin .25s}
+.ring-c.over i{width:54px;height:54px;margin:-27px}
 .mouse .glow,.mouse .ring-c{opacity:1}
 dialog .ring-c{display:none}
 .pop{transition:scale .32s cubic-bezier(.34,1.6,.64,1),translate .32s cubic-bezier(.34,1.6,.64,1),box-shadow .3s,border-color .3s,color .2s}
@@ -190,10 +199,16 @@ dialog .ring-c{display:none}
 @media (prefers-reduced-motion:reduce){.pop{transition:none}.pop:hover{scale:1!important;translate:none!important}.glow,.ring-c{display:none}}
 </style></head><body>
 
+<script>
+/* every refresh starts at the top, so the opening is seen again */
+try { history.scrollRestoration = "manual"; if (performance.getEntriesByType("navigation")[0].type === "reload") { history.replaceState(null, "", location.pathname + location.search); scrollTo(0, 0); } } catch (e) {}
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { document.documentElement.classList.add("intro"); setTimeout(() => document.documentElement.classList.remove("intro"), 5000); }
+</script>
 <div class="glow" id="glow" aria-hidden="true"></div><div class="ring-c" id="cring" aria-hidden="true"><i></i></div>
 <nav class="top" aria-label="Main"><div id="progress"></div><div class="wrap links"><a href="#top">Home</a><a href="#about">About me</a><a href="#work">Projects</a><a href="#services">Services</a><a href="#process">Process</a><a class="contact" href="#contact">Contact</a></div></nav>
 
 <header class="hero" id="top">
+  <span class="corner" aria-hidden="true"></span>
   <svg class="swirl" viewBox="0 0 1200 190" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0 150C220 190 420 60 700 100S1050 170 1200 40"/></svg>
   <div class="wrap">
     <div class="who" id="who">
@@ -206,6 +221,7 @@ dialog .ring-c{display:none}
       <p data-t="tagline"></p>
       <div class="actions"><a class="btn hot" id="explore" href="#work">View my work</a><button class="btn" id="playReel" type="button" hidden><i class="tri"></i>Play showreel</button></div>
     </div>
+    <div class="hsoc" id="hsoc"></div>
   </div>
 </header>
 
@@ -275,7 +291,7 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 let D = window.SITE_DATA;
 if (!D) {
   try { const r = await fetch("data.json", {cache:"no-store"}); if (!r.ok) throw new Error(r.status); D = await r.json(); }
-  catch (err) { $("#workNote").textContent = "Site content could not load. Check that data.json is uploaded next to index.html, then reload."; return; }
+  catch (err) { document.documentElement.classList.remove("intro"); $("#workNote").textContent = "Site content could not load. Check that data.json is uploaded next to index.html, then reload."; return; }
 }
 const P = {greeting:"Hi, I'm", roleTop:"Creative", roleMid:"Video Editor &", roleMain:"Motion Designer", contactTitle:"Let's Build\nSomething.", contactText:"Need a video editor to bring your vision to life? I'd love to hear from you. Whether it's commercials, YouTube videos, reels or motion graphics, I'm ready to help create videos that make an impact.\n\nFeel free to get in touch to discuss your project, request a quote, or simply say hello.", ...D.profile}, list = k => D[k] || [], show = D.show || {};
 const src = k => /^(https?:|data:image\/|assets\/)/i.test(k||"") ? k : "";
@@ -292,34 +308,6 @@ $("#mono").textContent = P.initials || (P.name||"").split(/\s+/).map(w=>w[0]).jo
 if (src(P.heroImage)) { $("#heroImg").src = src(P.heroImage); $("#heroImg").hidden = false; $("#cut").classList.add("has"); $("#who").classList.add("photo"); }
 const parts = (P.name||"").trim().split(/\s+/);
 $("#myName").append(el("span","",parts.shift()||""), " ", el("span","",parts.join(" ")));
-
-/* opening: the middle fades in first, then each side; the title letters keep rolling over */
-if (!still) {
-  const fade = (sel, delay) => document.querySelectorAll(sel).forEach(e => e.animate([{opacity:0},{opacity:1}],{duration:700,delay,easing:"ease-out",fill:"backwards"}));
-  fade(".cut",150); fade(".me",600); fade(".what",1000); fade(".copy",1500);
-  let k = 0;
-  document.querySelectorAll(".roll").forEach(line => {
-    const text = line.textContent; line.setAttribute("aria-label", text); line.replaceChildren();
-    text.split(/(\s+)/).filter(Boolean).forEach(part => {
-      if (/^\s+$/.test(part)) { line.append(" "); k++; return; }
-      const word = el("span","word"); word.setAttribute("aria-hidden","true");
-      [...part].forEach(c => {
-        const box = el("span","ch"), i = el("i","",c); box.append(i); word.append(box);
-        /* up and out, wait below, rise back: one letter after another */
-        i.animate([
-          {transform:"translateY(0)",offset:0,easing:"ease-in"},
-          {transform:"translateY(-125%)",offset:.045},
-          {transform:"translateY(125%)",offset:.046},
-          {transform:"translateY(125%)",offset:.125,easing:"cubic-bezier(.2,.8,.2,1)"},
-          {transform:"translateY(0)",offset:.19},
-          {transform:"translateY(0)",offset:1}
-        ],{duration:6300,delay:3200 + k++ * 60,iterations:Infinity});
-      });
-      line.append(word);
-    });
-    k++;
-  });
-}
 
 /* player */
 const dlg = $("#dlg"), media = $("#media"), body = $("#dbody");
@@ -435,6 +423,53 @@ list("socials").forEach(x => {
   row(kind, x.label, x.text || (kind === "whatsapp" ? "WhatsApp" : x.url), url);
 });
 
+/* the same contacts as small icons at the foot of the opening screen */
+list("socials").forEach((x,n) => {
+  const a = $("#socials").querySelectorAll(".crow")[n + (P.email ? 1 : 0)], link = a && a.querySelector("a"); if (!link) return;
+  const h = el("a"); h.href = link.href; h.target = "_blank"; h.rel = "noopener"; h.setAttribute("aria-label", x.label || "Contact");
+  h.append(a.querySelector("svg").cloneNode(true)); $("#hsoc").append(h);
+});
+
+/* opening, replayed on every refresh: a short dark beat, the middle drops in,
+   each side rises, then the icons; later the title letters keep rolling over */
+if (!still) {
+  await Promise.race([document.fonts ? document.fonts.ready : null, new Promise(done => setTimeout(done, 700))]);
+  const out = "cubic-bezier(.22,.7,.25,1)", soft = "cubic-bezier(.33,0,.2,1)";
+  const come = (e, from, delay, duration, easing = soft) => {
+    e.animate([{opacity:0},{opacity:1}], {duration:duration*.6, delay, easing:"ease-out", fill:"backwards"});
+    e.animate([from, {translate:"0 0", scale:1}], {duration, delay, easing, fill:"backwards"});
+  };
+  come($(".corner"), {scale:.6}, 150, 900);
+  come($("#cut"), {translate:"0 -70px", scale:$("#cut").classList.contains("has") ? 1 : .5}, 450, 1500, out);
+  come($(".me"), {translate:"0 64px"}, 950, 1350);
+  come($(".what"), {translate:"0 64px"}, 1350, 1350);
+  come($(".copy"), {translate:"0 64px"}, 1750, 1200);
+  $("#hsoc").querySelectorAll("a").forEach((a,n) => come(a, {translate:"0 44px"}, 1650 + n*130, 800));
+  let k = 0;
+  document.querySelectorAll(".roll").forEach(line => {
+    const text = line.textContent; line.setAttribute("aria-label", text); line.replaceChildren();
+    text.split(/(\s+)/).filter(Boolean).forEach(part => {
+      if (/^\s+$/.test(part)) { line.append(" "); k++; return; }
+      const word = el("span","word"); word.setAttribute("aria-hidden","true");
+      [...part].forEach(c => {
+        const box = el("span","ch"), i = el("i","",c); box.append(i); word.append(box);
+        /* up and out, wait below, rise back: one letter after another */
+        i.animate([
+          {transform:"translateY(0)",offset:0,easing:"ease-in"},
+          {transform:"translateY(-125%)",offset:.045},
+          {transform:"translateY(125%)",offset:.046},
+          {transform:"translateY(125%)",offset:.125,easing:"cubic-bezier(.2,.8,.2,1)"},
+          {transform:"translateY(0)",offset:.19},
+          {transform:"translateY(0)",offset:1}
+        ],{duration:6300,delay:4300 + k++ * 60,iterations:Infinity});
+      });
+      line.append(word);
+    });
+    k++;
+  });
+}
+document.documentElement.classList.remove("intro");
+
 const links = [...document.querySelectorAll(".links a")];
 function onScroll(){
   const max = document.documentElement.scrollHeight - innerHeight;
@@ -462,18 +497,18 @@ if (!still && matchMedia("(hover:hover) and (pointer:fine)").matches) {
   const ring = $("#cring"), dot = ring.firstElementChild, glow = $("#glow");
   let x = 0, y = 0, rx = 0, ry = 0, gx = 0, gy = 0, lastY = scrollY, stretch = 0, running = false, seen = false;
   const frame = () => {
-    rx += (x-rx)*.22; ry += (y-ry)*.22; gx += (x-gx)*.08; gy += (y-gy)*.08;
+    rx += (x-rx)*.16; ry += (y-ry)*.16; gx += (x-gx)*.08; gy += (y-gy)*.08;
     const v = scrollY - lastY; lastY = scrollY;
     stretch += (Math.max(-1,Math.min(1,v/45)) - stretch)*.18;
     const k = Math.abs(stretch);
     ring.style.translate = `${rx}px ${ry + stretch*14}px`; dot.style.transform = `scale(${1-k*.35},${1+k*.9})`; glow.style.translate = `${gx}px ${gy}px`;
-    if (Math.abs(x-gx)+Math.abs(y-gy) > .4 || k > .005) requestAnimationFrame(frame); else running = false;
+    if (Math.abs(x-gx)+Math.abs(y-gy) > .4 || Math.abs(x-rx)+Math.abs(y-ry) > .4 || k > .005) requestAnimationFrame(frame); else running = false;
   };
   const wake = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
   addEventListener("pointermove", e => {
     if (e.pointerType !== "mouse") return;
     x = e.clientX; y = e.clientY;
-    if (!seen) { seen = true; rx = gx = x; ry = gy = y; }
+    if (!seen) { seen = true; gx = x; gy = y; }
     document.body.classList.add("mouse"); ring.classList.toggle("over", !!e.target.closest("a,button,input,.pop")); wake();
   }, {passive:true});
   addEventListener("scroll", () => { if (seen) wake(); }, {passive:true});
