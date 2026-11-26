@@ -17,6 +17,11 @@
   },
   "socials": [
     {
+      "label": "WhatsApp",
+      "text": "+880 1781-262521",
+      "url": "https://wa.me/8801781262521"
+    },
+    {
       "label": "Instagram",
       "text": "@mohammed_jihad51",
       "url": "https://www.instagram.com/mohammed_jihad51/"
@@ -25,6 +30,11 @@
       "label": "Facebook",
       "text": "Mohammed Jihad",
       "url": "https://www.facebook.com/profile.php?id=61576366893671"
+    },
+    {
+      "label": "LinkedIn",
+      "text": "Mohammed Jihad",
+      "url": "https://www.linkedin.com/in/mohammed-jihad-a843983ba/"
     }
   ],
   "types": [
