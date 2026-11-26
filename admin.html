@@ -151,13 +151,14 @@ async function publish(){
   if (busy) return; busy = true; $("#publish").disabled = true;
   try {
     const copy = JSON.parse(JSON.stringify(D)), slots = [];
-    (function walk(o){ Object.keys(o).forEach(k => { const v = o[k]; if (typeof v === "string" && v.startsWith("data:image/jpeg;base64,")) slots.push([o,k,v]); else if (v && typeof v === "object") walk(v); }); })(copy);
+    (function walk(o){ Object.keys(o).forEach(k => { const v = o[k]; if (typeof v === "string" && /^data:image\/(jpeg|png|webp);base64,/.test(v)) slots.push([o,k,v]); else if (v && typeof v === "object") walk(v); }); })(copy);
     const done = new Map();
     for (let i=0; i<slots.length; i++) {
       const [o,k,v] = slots[i];
       if (!done.has(v)) {
         say(`ছবি আপলোড হচ্ছে ${i+1}/${slots.length}…`);
-        const path = `assets/uploads/${Date.now().toString(36)}-${i}.jpg`;
+        const ext = v.slice(11, v.indexOf(";")).replace("jpeg","jpg");
+        const path = `assets/uploads/${Date.now().toString(36)}-${i}.${ext}`;
         await gh(`/contents/${path}`, {method:"PUT", body:JSON.stringify({message:"Upload portfolio image", content:v.split(",")[1], branch:auth.branch})});
         done.set(v, path);
       }
@@ -196,10 +197,11 @@ function field(label, value, onInput, opt={}){
   l.append(i); return l;
 }
 function resize(file, max){
+  const type = /png|webp/.test(file.type) ? "image/webp" : "image/jpeg"; /* keeps a removed background transparent */
   return new Promise((ok, no) => {
     const url = URL.createObjectURL(file), im = new Image();
     im.onload = () => { const k = Math.min(1, max/Math.max(im.width,im.height)), c = el("canvas"); c.width = Math.round(im.width*k); c.height = Math.round(im.height*k);
-      const g = c.getContext("2d"); g.fillStyle = "#000"; g.fillRect(0,0,c.width,c.height); g.drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg",.84)); };
+      const g = c.getContext("2d"); if (type === "image/jpeg") { g.fillStyle = "#000"; g.fillRect(0,0,c.width,c.height); } g.drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(url); ok(c.toDataURL(type,.86)); };
     im.onerror = () => { URL.revokeObjectURL(url); no(); };
     im.src = url;
   });
@@ -267,9 +269,9 @@ function toggle(key, text){
 }
 function profile(panel){
   const P = D.profile, b = box("পরিচিতি");
-  [["greeting","শুরুর সম্ভাষণ (যেমন Hi, I'm)"],["name","নাম"],["initials","লোগোর অক্ষর"],["role","পদবি"],["line1","হেডলাইন, প্রথম লাইন"],["line2","হেডলাইন, দ্বিতীয় লাইন"],["tagline","হেডলাইনের নিচের লেখা",{area:true}],["statement","About-এর বড় উক্তি",{area:true}],["bio","নিজের সম্পর্কে",{area:true}],["email","ইমেইল",{type:"email"}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}],["contactTitle","Contact-এর শিরোনাম",{area:true}],["contactText","Contact-এর লেখা",{area:true}]]
+  [["greeting","শুরুর সম্ভাষণ (যেমন Hi, I'm)"],["name","নাম"],["initials","লোগোর অক্ষর"],["role","পদবি (ব্রাউজার ট্যাবে দেখায়)"],["roleTop","হোমের পদবি, ছোট শব্দ"],["roleMid","হোমের পদবি, রঙিন লাইন"],["roleMain","হোমের পদবি, সাদা লাইন"],["line1","হেডলাইন, প্রথম লাইন"],["line2","হেডলাইন, দ্বিতীয় লাইন"],["tagline","হেডলাইনের নিচের লেখা",{area:true}],["statement","About-এর বড় উক্তি",{area:true}],["bio","নিজের সম্পর্কে",{area:true}],["email","ইমেইল",{type:"email"}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}],["contactTitle","Contact-এর শিরোনাম",{area:true}],["contactText","Contact-এর লেখা",{area:true}]]
     .forEach(([k,label,opt]) => b.append(field(label, P[k], v => { P[k] = v; changed(); }, opt)));
-  b.append(picture("আপনার ছবি, Contact অংশে দেখাবে (লম্বা, 4:5 হলে ভালো)", P, "photo"), picture("উপরের (Home) ছবি, না দিলে ছবি ছাড়া দেখাবে", P, "heroImage"));
+  b.append(picture("আপনার ছবি, Contact অংশে দেখাবে (লম্বা, 4:5 হলে ভালো)", P, "photo"), picture("হোমের ছবি, নাম ও পদবির মাঝখানে বসবে (ব্যাকগ্রাউন্ড কাটা PNG সবচেয়ে ভালো)", P, "heroImage"));
   b.append(toggle("portrait","Contact অংশের ডান পাশে ছবির বক্স দেখাও"));
   panel.append(b, rows("সোশ্যাল লিংক","socials",[["label","নাম (যেমন YouTube)"],["text","যে লেখা দেখাবে"],["url","লিংক"]],"+ লিংক যোগ করো"));
 }
