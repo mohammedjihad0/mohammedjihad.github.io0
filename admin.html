@@ -262,11 +262,15 @@ function projects(panel){
   });
   panel.append(l);
 }
+function toggle(key, text){
+  const l = el("label","check"), c = el("input"); c.type = "checkbox"; c.checked = D.show[key] !== false; c.onchange = () => { D.show[key] = c.checked; changed(); }; l.append(c, document.createTextNode(text)); return l;
+}
 function profile(panel){
   const P = D.profile, b = box("পরিচিতি");
   [["name","নাম"],["initials","লোগোর অক্ষর"],["role","পদবি"],["line1","হেডলাইন, প্রথম লাইন"],["line2","হেডলাইন, দ্বিতীয় লাইন"],["tagline","হেডলাইনের নিচের লেখা",{area:true}],["statement","About-এর বড় উক্তি",{area:true}],["bio","নিজের সম্পর্কে",{area:true}],["email","ইমেইল",{type:"email"}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}],["contactTitle","Contact-এর শিরোনাম",{area:true}],["contactText","Contact-এর লেখা",{area:true}]]
     .forEach(([k,label,opt]) => b.append(field(label, P[k], v => { P[k] = v; changed(); }, opt)));
   b.append(picture("আপনার ছবি, Contact অংশে দেখাবে (লম্বা, 4:5 হলে ভালো)", P, "photo"), picture("উপরের (Home) ছবি, না দিলে ছবি ছাড়া দেখাবে", P, "heroImage"));
+  b.append(toggle("portrait","Contact অংশের ডান পাশে ছবির বক্স দেখাও"));
   panel.append(b, rows("সোশ্যাল লিংক","socials",[["label","নাম (যেমন YouTube)"],["text","যে লেখা দেখাবে"],["url","লিংক"]],"+ লিংক যোগ করো"));
 }
 function types(panel){
@@ -287,9 +291,7 @@ function types(panel){
 }
 function sections(panel){
   const v = box("কোন সেকশন দেখাবে");
-  [["color","Color grade"],["services","Services"],["process","Process"]].forEach(([k,t]) => {
-    const l = el("label","check"), c = el("input"); c.type = "checkbox"; c.checked = D.show[k] !== false; c.onchange = () => { D.show[k] = c.checked; changed(); }; l.append(c, document.createTextNode(t)); v.append(l);
-  });
+  [["color","Color grade"],["services","Services"],["process","Process"],["portrait","Contact-এর ছবির বক্স"]].forEach(([k,t]) => v.append(toggle(k,t)));
   const g = box("কালার গ্রেডিং ফ্রেম","একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে এই সেকশন সাইটে দেখাবে না।");
   g.append(picture("আগে (flat)", D.grade, "before"), picture("পরে (graded)", D.grade, "after"));
   panel.append(v, g,

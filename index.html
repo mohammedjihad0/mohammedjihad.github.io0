@@ -342,6 +342,7 @@ list("steps").forEach((x,i) => {
 });
 if (show.process === false || !list("steps").length) drop("process");
 if (src(P.photo)) $("#portrait").replaceChildren(img(P.photo, P.name));
+if (show.portrait === false) $("#contact .frame").hidden = true;
 list("stats").forEach(x => { const d = el("div"); d.append(el("b","",x.value), el("span","",x.label)); $("#stats").append(d); });
 $("#stats").hidden = !list("stats").length;
 list("tools").forEach(x => { const t = el("div","tool"); t.append(el("b","",x.name), el("span","",x.use)); $("#tools").append(t); });
@@ -381,7 +382,7 @@ list("socials").forEach(x => {
   let url = web(x.url);
   /* a bare WhatsApp number becomes a direct chat link */
   if (kind === "whatsapp" && !url) { let n = (x.url || x.text || "").replace(/\D/g,""); if (/^01\d{9}$/.test(n)) n = "88"+n; if (n) url = "https://wa.me/"+n; }
-  row(kind, x.label, x.text || x.url, url);
+  row(kind, x.label, x.text || (kind === "whatsapp" ? "WhatsApp" : x.url), url);
 });
 
 const links = [...document.querySelectorAll(".links a")];

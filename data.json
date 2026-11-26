@@ -18,7 +18,7 @@
   "socials": [
     {
       "label": "WhatsApp",
-      "text": "+880 1781-262521",
+      "text": "WhatsApp",
       "url": "https://wa.me/8801781262521"
     },
     {
@@ -44,6 +44,10 @@
     },
     {
       "name": "YouTube",
+      "image": ""
+    },
+    {
+      "name": "EdTech",
       "image": ""
     },
     {
@@ -148,6 +152,7 @@
   "show": {
     "color": true,
     "services": true,
-    "process": true
+    "process": true,
+    "portrait": false
   }
 }
