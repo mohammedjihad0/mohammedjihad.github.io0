@@ -37,7 +37,7 @@ textarea{min-height:90px;resize:vertical}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .tabs button[aria-pressed=true]{background:var(--amber);border-color:var(--teal);color:#fff}
 .item{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
-.item img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:var(--ink)}
+.item img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:linear-gradient(135deg,#2e1065,#12081f)}
 .item b{display:block;overflow-wrap:anywhere}
 .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:620px){.item{grid-template-columns:72px minmax(0,1fr)}.item img{width:72px;height:48px}.acts{grid-column:1/-1;justify-content:flex-start}}
@@ -184,7 +184,7 @@ $("#download").onclick = () => {
 };
 
 /* ---------- form helpers ---------- */
-const pic = k => !k ? "" : previews.get(k) || (/^(https?:|data:|assets\/)/.test(k) ? k : `assets/${k}.jpg`);
+const pic = k => !k ? "" : previews.get(k) || (/^(https?:|data:|assets\/)/.test(k) ? k : "");
 const ytThumb = u => { const m = (u||"").match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/|live\/)([\w-]{11})/); return m ? `https://i.ytimg.com/vi/${m[1]}/hqdefault.jpg` : ""; };
 function field(label, value, onInput, opt={}){
   const l = el("label","",label); let i;
@@ -219,7 +219,6 @@ function rows(title, key, fields, addText, note){
   arr.forEach((item,i) => {
     const r = el("div","row");
     fields.forEach(([k,label,opt]) => r.append(field(label, item[k], v => { item[k] = v; changed(); }, opt)));
-    if (key === "services") r.append(picture("কভার ছবি", item, "image"));
     const a = el("div","acts"); a.append(btn("↑", () => move(arr,i,-1)), btn("↓", () => move(arr,i,1)), btn("মুছো", () => { arr.splice(i,1); changed(); render(); }, "small danger"));
     r.append(a); b.append(r);
   });
@@ -238,7 +237,7 @@ function projects(panel){
   b.append(field("ভিডিও লিংক *", p.video, v => p.video = v, {type:"url",hint:"YouTube, Vimeo, Drive, Facebook বা Instagram লিংক"}), field("ভিডিওর আকার", p.shape, v => p.shape = v, {options:[["wide","আড়াআড়ি (16:9)"],["vertical","লম্বা (Reels / Shorts)"]]}));
   const c = el("div","two");
   c.append(field("ক্লায়েন্ট", p.client, v => p.client = v), field("আপনার ভূমিকা", p.role, v => p.role = v, {hint:"Edit, motion, color"}));
-  f.append(a, b, c, field("ছোট বর্ণনা", p.about, v => p.about = v, {area:true}), picture("থাম্বনেইল (না দিলে YouTube থেকে বা ধরনের ছবি বসবে)", p, "image"));
+  f.append(a, b, c, field("ছোট বর্ণনা", p.about, v => p.about = v, {area:true}), picture("থাম্বনেইল (না দিলে YouTube থেকে আসবে)", p, "image"));
   const acts = el("div","acts"); acts.style.justifyContent = "flex-start";
   const save = el("button","hot",isNew ? "তালিকায় যোগ করো" : "পরিবর্তন রাখো"); save.type = "submit"; acts.append(save);
   if (!isNew) acts.append(btn("বাতিল", () => { editing = null; render(); }, ""));
@@ -253,7 +252,7 @@ function projects(panel){
   panel.append(f);
   const l = box(`আপনার প্রজেক্ট (${D.projects.length})`, D.projects.length ? "উপরের প্রজেক্ট সাইটে আগে দেখাবে।" : "এখনো কোনো প্রজেক্ট নেই। উপরের ফর্ম থেকে প্রথমটা যোগ করুন।");
   D.projects.forEach((x,i) => {
-    const r = el("div","item"), im = el("img"); im.alt = ""; im.src = pic(x.image || ytThumb(x.video) || D.types.find(t => t.name === x.type)?.image || "motion");
+    const r = el("div","item"), im = el("img"); im.alt = ""; const source = pic(x.image) || ytThumb(x.video); if (source) im.src = source;
     const t = el("div"); t.append(el("b","",x.title), el("span","muted",`${x.type} · ${x.shape === "vertical" ? "লম্বা" : "আড়াআড়ি"}`));
     const acts = el("div","acts");
     acts.append(btn("↑", () => { editing = null; move(D.projects,i,-1); }), btn("↓", () => { editing = null; move(D.projects,i,1); }),
@@ -267,7 +266,7 @@ function profile(panel){
   const P = D.profile, b = box("পরিচিতি");
   [["name","নাম"],["initials","লোগোর অক্ষর"],["role","পদবি"],["line1","হেডলাইন, প্রথম লাইন"],["line2","হেডলাইন, দ্বিতীয় লাইন"],["tagline","হেডলাইনের নিচের লেখা",{area:true}],["statement","About-এর বড় উক্তি",{area:true}],["bio","নিজের সম্পর্কে",{area:true}],["email","ইমেইল",{type:"email"}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}],["contactTitle","Contact-এর শিরোনাম",{area:true}],["contactText","Contact-এর লেখা",{area:true}]]
     .forEach(([k,label,opt]) => b.append(field(label, P[k], v => { P[k] = v; changed(); }, opt)));
-  b.append(picture("আপনার ছবি, Contact অংশে দেখাবে (লম্বা, 4:5 হলে ভালো)", P, "photo"), picture("উপরের (Home) ছবি, না দিলে নমুনা ছবি", P, "heroImage"));
+  b.append(picture("আপনার ছবি, Contact অংশে দেখাবে (লম্বা, 4:5 হলে ভালো)", P, "photo"), picture("উপরের (Home) ছবি, না দিলে ছবি ছাড়া দেখাবে", P, "heroImage"));
   panel.append(b, rows("সোশ্যাল লিংক","socials",[["label","নাম (যেমন YouTube)"],["text","যে লেখা দেখাবে"],["url","লিংক"]],"+ লিংক যোগ করো"));
 }
 function types(panel){
@@ -282,7 +281,7 @@ function types(panel){
     const a = el("div","acts"); a.append(btn("↑", () => move(D.types,i,-1)), btn("↓", () => move(D.types,i,1)), btn("মুছো", () => {
       if (D.projects.some(p => p.type === t.name)) return say("এই ধরনে প্রজেক্ট আছে, তাই মোছা যাবে না।","bad");
       D.types.splice(i,1); editing = null; changed(); render(); }, "small danger"));
-    r.append(name, picture("কভার ছবি", t, "image"), a); b.append(r);
+    r.append(name, a); b.append(r);
   });
   const add = btn("+ নতুন ধরন", () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); editing = null; changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
 }
@@ -291,7 +290,7 @@ function sections(panel){
   [["color","Color grade"],["services","Services"],["process","Process"]].forEach(([k,t]) => {
     const l = el("label","check"), c = el("input"); c.type = "checkbox"; c.checked = D.show[k] !== false; c.onchange = () => { D.show[k] = c.checked; changed(); }; l.append(c, document.createTextNode(t)); v.append(l);
   });
-  const g = box("কালার গ্রেডিং ফ্রেম","একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে নমুনা ফ্রেম দেখাবে।");
+  const g = box("কালার গ্রেডিং ফ্রেম","একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে এই সেকশন সাইটে দেখাবে না।");
   g.append(picture("আগে (flat)", D.grade, "before"), picture("পরে (graded)", D.grade, "after"));
   panel.append(v, g,
     rows("সার্ভিস","services",[["name","নাম"],["text","বর্ণনা",{area:true}]],"+ সার্ভিস"),

@@ -30,31 +30,31 @@
   "types": [
     {
       "name": "Commercial",
-      "image": "product"
+      "image": ""
     },
     {
       "name": "YouTube",
-      "image": "mic"
+      "image": ""
     },
     {
       "name": "Reels & Shorts",
-      "image": "city"
+      "image": ""
     },
     {
       "name": "Motion Graphics",
-      "image": "motion"
+      "image": ""
     },
     {
       "name": "Music Video",
-      "image": "stage"
+      "image": ""
     },
     {
       "name": "Wedding",
-      "image": "rings"
+      "image": ""
     },
     {
       "name": "Documentary",
-      "image": "dunes"
+      "image": ""
     }
   ],
   "projects": [],
@@ -62,32 +62,32 @@
     {
       "name": "Commercials",
       "text": "Brand films, product ads and campaign cut-downs built to hold attention.",
-      "image": "product"
+      "image": ""
     },
     {
       "name": "YouTube & Podcasts",
       "text": "Story-first pacing, multicam, captions and chapters that keep viewers watching.",
-      "image": "mic"
+      "image": ""
     },
     {
       "name": "Reels & Shorts",
       "text": "Fast vertical edits with a strong hook and animated subtitles.",
-      "image": "city"
+      "image": ""
     },
     {
       "name": "Motion Graphics",
       "text": "Titles, logo animation, lower thirds and explainer visuals.",
-      "image": "motion"
+      "image": ""
     },
     {
       "name": "Weddings & Events",
       "text": "Highlight films and full edits that bring the day back.",
-      "image": "rings"
+      "image": ""
     },
     {
       "name": "Color & Sound",
       "text": "Grading, audio cleanup, sound design and final mix.",
-      "image": "stage"
+      "image": ""
     }
   ],
   "steps": [

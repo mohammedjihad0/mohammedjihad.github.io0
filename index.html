@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&family=Hind+Siliguri:wght@400;600&display=swap">
 <style>
-/* Layout: black drafting grid, left-set headlines, framed stills and one drawn line. Royal purple is the only hue. No motion. */
+/* Layout: black drafting grid, left-set headlines, type tabs, one drawn line. Royal purple is the only hue. Motion follows the mouse. */
 :root{
   --bg:#08060d; --panel:#110c1c; --text:#f3f0fa; --muted:#aca4c0; --line:rgba(167,139,250,.22); --grid:rgba(167,139,250,.085);
   --royal:#6d28d9; --royal-hi:#7c3aed; --lav:#c4b5fd; --white:#fff;
@@ -52,6 +52,8 @@ h1{font-size:clamp(2.9rem,6.2vw,5.2rem)}
 h1 span{display:block}h1 span+span{color:var(--lav)}
 .copy>p:not(.role){max-width:46ch;color:var(--muted)}
 .hero .frame{width:100%;max-width:380px;justify-self:end}
+.hero .wrap.solo{grid-template-columns:minmax(0,1fr);text-align:center;padding-block:clamp(80px,13vw,170px) clamp(120px,15vw,200px)}
+.solo .copy{justify-items:center}.solo .actions{justify-content:center}.solo h1{font-size:clamp(3.2rem,10vw,8rem)}
 @media (max-width:800px){.hero .wrap{grid-template-columns:minmax(0,1fr)}.hero .frame{justify-self:start;max-width:300px}}
 
 section[id]{scroll-margin-top:calc(env(safe-area-inset-top,0px) + 64px)}
@@ -73,27 +75,25 @@ h2{font-size:clamp(2.4rem,5.6vw,4.4rem)}
 .tool b{display:block;font-weight:500}.tool span{font-size:.82rem;color:var(--muted)}
 .xp{display:grid;grid-template-columns:130px minmax(0,1fr);gap:6px 20px;padding-block:14px;border-top:1px solid var(--line)}
 
-.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.pill{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 16px;font-size:.92rem;color:var(--muted)}
-.pill:hover{color:var(--text);border-color:var(--lav)}
-.pill[aria-pressed="true"]{background:var(--royal);border-color:var(--royal-hi);color:var(--white)}
-.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px}
-.card{grid-column:span 6;position:relative;display:block;width:100%;height:clamp(250px,30vw,390px);border:1px solid var(--line);padding:0;border-radius:14px;overflow:hidden;background:var(--panel);text-align:left;isolation:isolate}
-button.card:hover,.reelc:hover{border-color:var(--lav)}
-.card img{width:100%;height:100%;object-fit:cover}
-.card::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(6,3,12,.92))}
-.cinfo{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:22px;display:grid;gap:4px}
-.cinfo h3{font-size:clamp(1.4rem,2.4vw,2rem)}
+.types{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:30px}
+.type{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 22px;font-weight:500;font-size:1.05rem;color:var(--muted);display:flex;align-items:center;gap:10px}
+.type small{min-width:24px;padding:0 7px;border-radius:99px;background:rgba(167,139,250,.16);color:var(--lav);font-size:.78rem;text-align:center}
+.type[aria-pressed="true"]{background:var(--royal);border-color:var(--lav);color:var(--white);box-shadow:0 12px 32px -12px rgba(124,58,237,.9)}
+.type[aria-pressed="true"] small{background:var(--white);color:var(--royal)}
+#panel{display:grid;gap:22px;min-height:190px;align-content:start}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:22px}
+.grid.tall{grid-template-columns:repeat(auto-fill,minmax(min(46%,220px),1fr))}
+.card{display:grid;grid-template-rows:auto 1fr;width:100%;border:1px solid var(--line);padding:0;border-radius:14px;overflow:hidden;background:var(--panel);text-align:left}
+.thumb{position:relative;display:grid;place-items:center;aspect-ratio:16/9;width:100%;background:linear-gradient(135deg,#2e1065,#12081f);overflow:hidden}
+.tall .thumb{aspect-ratio:9/16}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.go{position:relative;z-index:2;width:58px;height:58px;border-radius:50%;background:var(--white);color:var(--royal);display:grid;place-items:center;padding-left:4px}
+.cinfo{padding:16px 18px 20px;display:grid;gap:2px;align-content:start}
+.cinfo b{font-size:1.2rem;font-weight:600}
 .cinfo span{font-size:.9rem;color:var(--lav)}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:clamp(36px,7vw,70px) 24px;text-align:center;display:grid;gap:6px}
+.empty b{font-size:1.4rem;font-weight:600}.empty span{color:var(--muted)}
 .tag{position:absolute;z-index:2;top:14px;left:14px;padding:3px 12px;border-radius:6px;background:var(--royal);color:var(--white);font-size:.8rem;font-weight:500}
-.go{position:absolute;z-index:2;top:12px;right:12px;width:42px;height:42px;border-radius:8px;background:var(--white);color:var(--royal);display:grid;place-items:center;padding-left:3px}
-@media (max-width:760px){.grid .card{grid-column:span 12!important;height:260px}}
-
-.rail{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(190px,22vw,250px);gap:16px;overflow-x:auto;padding-bottom:14px}
-.reelc{position:relative;aspect-ratio:9/16;border:1px solid var(--line);padding:0;border-radius:14px;overflow:hidden;background:var(--panel);text-align:left;outline-offset:-3px}
-.reelc img{width:100%;height:100%;object-fit:cover}
-.reelc div{position:absolute;inset:auto 0 0;padding:50px 16px 16px;background:linear-gradient(transparent,rgba(6,3,12,.92));display:grid}
-.reelc b{font-weight:500}.reelc span{font-size:.82rem;color:var(--lav)}
 
 .compare{position:relative;height:clamp(260px,46vw,540px);border:1px solid var(--line);border-radius:14px;overflow:hidden;--p:50%;user-select:none}
 .compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -103,15 +103,12 @@ button.card:hover,.reelc:hover{border-color:var(--lav)}
 .compare .tag.r{left:auto;right:14px}
 .compare input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;z-index:3;touch-action:pan-y}
 .compare:focus-within{outline:2px solid var(--lav);outline-offset:4px}
-.looks{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;margin-top:16px}
-.looks .pills{margin:0}
-
 .cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 @media (max-width:900px){.cards3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:580px){.cards3{grid-template-columns:minmax(0,1fr)}}
 .svc,.step{border:1px solid var(--line);border-radius:14px;background:var(--panel);overflow:hidden}
-.svc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
-.svc div{padding:20px 22px 24px;display:grid;gap:8px}
+.svc{padding:26px 24px 28px;display:grid;gap:10px;align-content:start}
+.svc::before{content:"";width:34px;height:6px;border-radius:99px;background:var(--royal-hi)}
 .svc h3,.step h3{font-size:1.45rem}
 .svc p,.step p{color:var(--muted);font-size:.97rem}
 .step{padding:24px;display:grid;gap:10px;align-content:start}
@@ -145,15 +142,37 @@ dialog{width:min(1000px,calc(100% - 28px));max-height:90%;padding:0;border:1px s
 dialog::backdrop{background:rgba(4,2,9,.9)}
 .media{background:#000;display:grid;place-items:center}
 .media img,.media video,.media iframe{display:block;width:100%;max-height:66vh;object-fit:contain;border:0}
+.media .thumb img{position:static;height:auto}
 .media iframe{aspect-ratio:16/9}
 .dbody{padding:22px clamp(18px,3vw,30px) 28px;display:grid;gap:16px}
 .dbody h3{font-size:2rem}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
 .facts span{display:block;font-size:.8rem;color:var(--lav)}
 .close{position:absolute;right:10px;top:10px;z-index:4;width:38px;height:38px;border-radius:8px;border:0;background:var(--royal);color:var(--white);font-size:1.3rem;line-height:1}
+
+/* motion */
+#progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--royal),var(--lav))}
+.glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px;border-radius:50%;background:radial-gradient(closest-side,rgba(124,58,237,.2),transparent);pointer-events:none;z-index:-1;opacity:0;transition:opacity .4s}
+.ring-c{position:fixed;left:0;top:0;z-index:30;pointer-events:none;opacity:0;transition:opacity .3s}
+.ring-c i{display:block;width:34px;height:34px;margin:-17px;border-radius:50%;border:2px solid var(--lav);box-shadow:0 0 18px rgba(139,92,246,.75),inset 0 0 10px rgba(139,92,246,.45);transition:width .25s,height .25s,margin .25s,background .25s}
+.ring-c.over i{width:58px;height:58px;margin:-29px;background:rgba(139,92,246,.2)}
+.mouse .glow,.mouse .ring-c{opacity:1}
+dialog .ring-c{display:none}
+.pop{transition:scale .32s cubic-bezier(.34,1.6,.64,1),translate .32s cubic-bezier(.34,1.6,.64,1),box-shadow .3s,border-color .3s,color .2s}
+@media (hover:hover){
+  .pop:hover,button.pop:focus-visible,a.pop:focus-visible{scale:1.05;translate:0 -6px;box-shadow:0 20px 44px -16px rgba(124,58,237,.85);border-color:var(--lav);position:relative;z-index:3}
+  .type.pop:hover,.btn.pop:hover{scale:1.08;translate:0 -3px}
+  .crow.pop:hover{scale:1.05;translate:6px 0;box-shadow:none}
+  .links a.pop:hover{scale:1.14;translate:0 -1px;box-shadow:none;border-color:transparent}
+  .links a.contact.pop:hover{border-color:var(--lav)}
+  .frame.pop:hover{scale:1.04;box-shadow:none}
+}
+.crow{width:fit-content;max-width:100%;transform-origin:left}
+@media (prefers-reduced-motion:reduce){.pop{transition:none}.pop:hover{scale:1!important;translate:none!important}.glow,.ring-c{display:none}}
 </style></head><body>
 
-<nav class="top" aria-label="Main"><div class="wrap links"><a href="#top">Home</a><a href="#about">About me</a><a href="#work">Projects</a><a href="#services">Services</a><a href="#process">Process</a><a class="contact" href="#contact">Contact</a></div></nav>
+<div class="glow" id="glow" aria-hidden="true"></div><div class="ring-c" id="cring" aria-hidden="true"><i></i></div>
+<nav class="top" aria-label="Main"><div id="progress"></div><div class="wrap links"><a href="#top">Home</a><a href="#about">About me</a><a href="#work">Projects</a><a href="#services">Services</a><a href="#process">Process</a><a class="contact" href="#contact">Contact</a></div></nav>
 
 <header class="hero" id="top">
   <svg class="swirl" viewBox="0 0 1200 190" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0 150C220 190 420 60 700 100S1050 170 1200 40"/></svg>
@@ -164,7 +183,7 @@ dialog::backdrop{background:rgba(4,2,9,.9)}
       <p data-t="tagline"></p>
       <div class="actions"><a class="btn hot" id="explore" href="#work">View my work</a><button class="btn" id="playReel" type="button" hidden><i class="tri"></i>Play showreel</button></div>
     </div>
-    <div class="frame"><div class="shape"><div class="inner"><img id="heroImg" alt=""></div></div></div>
+    <div class="frame" id="heroFrame" hidden><div class="shape"><div class="inner"><img id="heroImg" alt=""></div></div></div>
   </div>
 </header>
 
@@ -179,24 +198,18 @@ dialog::backdrop{background:rgba(4,2,9,.9)}
 
   <section id="work" class="wrap">
     <div class="shead"><h2>Projects</h2><p id="workNote"></p></div>
-    <div class="pills" id="filters" role="group" aria-label="Filter projects"></div>
-    <div class="grid" id="grid"></div>
-  </section>
-
-  <section id="reels" class="wrap">
-    <div class="shead"><h2>Short form</h2><p>Vertical edits for Reels, Shorts and TikTok.</p></div>
-    <div class="rail" id="rail"></div>
+    <div class="types" id="filters" role="group" aria-label="Work type"></div>
+    <div id="panel" aria-live="polite"></div>
   </section>
 
   <section id="color" class="wrap">
     <div class="shead"><h2>Color grade</h2><p>Drag across the frame to compare before and after.</p></div>
     <div class="compare" id="compare">
       <img id="after" alt="Graded frame"><img id="before" alt="Flat frame">
-      <div class="divider"></div><span class="tag">Before</span><span class="tag r" id="afterTag">After</span>
+      <div class="divider"></div><span class="tag">Before</span><span class="tag r">After</span>
       <input type="range" id="split" min="0" max="100" value="50" aria-label="Before and after position">
     </div>
-    <div class="looks"><div class="pills" id="looks" role="group" aria-label="Grade style"></div><div class="pills" id="frames" role="group" aria-label="Sample frame"></div></div>
-  </section>
+      </section>
 
   <section id="services" class="wrap">
     <div class="shead"><h2>Services</h2><p>Post-production from the first cut to the final mix.</p></div>
@@ -243,10 +256,10 @@ if (!D) {
   catch (err) { $("#workNote").textContent = "Site content could not load. Check that data.json is uploaded next to index.html, then reload."; return; }
 }
 const P = {contactTitle:"Let's Build\nSomething.", contactText:"Need a video editor to bring your vision to life? I'd love to hear from you. Whether it's commercials, YouTube videos, reels or motion graphics, I'm ready to help create videos that make an impact.\n\nFeel free to get in touch to discuss your project, request a quote, or simply say hello.", ...D.profile}, list = k => D[k] || [], show = D.show || {};
-const INLINE = window.ART || {};
-const src = k => !k ? "" : INLINE[k] || (/^(https?:|data:image\/|assets\/)/i.test(k) ? k : `assets/${k}.jpg`);
+const src = k => /^(https?:|data:image\/|assets\/)/i.test(k||"") ? k : "";
 const web = u => /^(https?:\/\/|assets\/)/i.test((u||"").trim()) ? u.trim() : (/^[\w-]+(\.[\w-]+)+\//.test((u||"").trim()) ? "https://"+u.trim() : "");
 const img = (key, alt="") => { const i = el("img"); i.src = src(key); i.alt = alt; return i; };
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const youtubeId = u => ((u||"").match(/(?:youtu\.be\/|[?&]v=|shorts\/|embed\/|live\/)([\w-]{11})/)||[])[1];
 const drop = id => { $("#"+id).hidden = true; document.querySelectorAll(`.links a[href="#${id}"]`).forEach(a => a.hidden = true); };
 
@@ -254,7 +267,8 @@ document.title = `${P.name} · ${P.role}`;
 document.querySelectorAll("[data-t]").forEach(e => e.textContent = P[e.dataset.t] || "");
 $("#mono").textContent = P.initials || (P.name||"").split(/\s+/).map(w=>w[0]).join("").slice(0,3);
 
-$("#heroImg").src = src(P.heroImage || "motion");
+if (src(P.heroImage)) { $("#heroImg").src = src(P.heroImage); $("#heroFrame").hidden = false; }
+else $(".hero .wrap").classList.add("solo");
 
 /* player */
 const dlg = $("#dlg"), media = $("#media"), body = $("#dbody");
@@ -280,75 +294,53 @@ function open(title, link, fallback, facts){
 $("#close").onclick = () => dlg.close();
 dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 dlg.addEventListener("close", () => media.replaceChildren());
-if (web(P.showreel)) { $("#playReel").hidden = false; $("#playReel").onclick = () => open("Showreel", P.showreel, img("city","Showreel")); }
+if (web(P.showreel)) { $("#playReel").hidden = false; $("#playReel").onclick = () => open("Showreel", P.showreel, thumb("", "Showreel")); }
 
-/* work */
-const cover = p => {
-  const type = list("types").find(t => t.name === p.type), yt = youtubeId(p.video);
-  const i = img(p.image || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : (type && type.image) || "motion"), p.title);
-  i.loading = "lazy"; return i;
-};
+/* work: pick a type, its projects open below */
+function thumb(key, alt){
+  const t = el("div","thumb"), go = el("span","go"); go.append(el("i","tri")); t.append(go);
+  if (key) { const i = el("img"); i.alt = alt; i.loading = "lazy"; i.onerror = () => i.remove(); i.src = key; t.prepend(i); }
+  return t;
+}
+function cover(p){ const yt = youtubeId(p.video); return thumb(src(p.image) || (yt ? `https://i.ytimg.com/vi/${yt}/hqdefault.jpg` : ""), p.title); }
 const show1 = p => open(p.title, p.video, cover(p), [["Type",p.type],["Client",p.client],["My role",p.role],["About",p.about]]);
-function pills(host, names, pick){
-  names.forEach((n,i) => { const b = el("button","pill",n); b.type = "button"; b.setAttribute("aria-pressed", i===0);
-    b.onclick = () => { [...host.children].forEach(x => x.setAttribute("aria-pressed", x===b)); pick(n,i); }; host.append(b); });
-}
-function layout(){
-  const v = [...$("#grid").children].filter(c => !c.hidden);
-  v.forEach((c,i) => c.style.gridColumn = "span " + (i === v.length-1 && v.length%2 ? 12 : [7,5,5,7][i%4]));
-}
-const wide = list("projects").filter(p => p.shape !== "vertical"), tall = list("projects").filter(p => p.shape === "vertical");
-function card(clickable, image, tag, title, sub){
-  const c = el(clickable ? "button" : "div","card"); if (clickable) c.type = "button";
-  const info = el("div","cinfo"); info.append(el("h3","",title), el("span","",sub||""));
-  c.append(image);
-  if (tag) c.append(el("span","tag",tag));
-  if (clickable) { const go = el("span","go"); go.append(el("i","tri")); c.append(go); }
-  c.append(info); return c;
-}
-if (wide.length) {
-  $("#workNote").textContent = "Open any project to watch it.";
-  wide.forEach(p => { const c = card(true, cover(p), p.type, p.title, p.client); c.dataset.type = p.type; c.onclick = () => show1(p); $("#grid").append(c); });
-  pills($("#filters"), ["All", ...new Set(wide.map(p => p.type))], n => {
-    [...$("#grid").children].forEach(c => { c.hidden = n!=="All" && c.dataset.type!==n; });
-    layout();
+const projects = list("projects"), types = list("types").map(t => t.name);
+projects.forEach(p => { if (p.type && !types.includes(p.type)) types.push(p.type); });
+function openType(name, animate){
+  [...$("#filters").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.type===name));
+  const mine = projects.filter(p => p.type===name), panel = $("#panel"); panel.replaceChildren();
+  ["wide","tall"].forEach(shape => {
+    const set = mine.filter(p => (p.shape==="vertical") === (shape==="tall")); if (!set.length) return;
+    const g = el("div","grid "+shape);
+    set.forEach(p => { const c = el("button","card pop"); c.type = "button"; const info = el("div","cinfo"); info.append(el("b","",p.title)); if (p.client) info.append(el("span","",p.client)); c.append(cover(p), info); c.onclick = () => show1(p); g.append(c); });
+    panel.append(g);
   });
-} else if (!tall.length) {
-  $("#workNote").textContent = "The kinds of video I work on. Projects are being added.";
-  list("types").forEach(t => $("#grid").append(card(false, img(t.image || "motion", ""), "", t.name, "Coming soon")));
-} else { drop("work"); $("#explore").href = "#reels"; }
-layout();
-tall.forEach(p => {
-  const b = el("button","reelc"); b.type = "button"; const d = el("div"); d.append(el("b","",p.title), el("span","",p.type));
-  b.append(cover(p), d); b.onclick = () => show1(p); $("#rail").append(b);
-});
-if (!tall.length) drop("reels");
-
-/* color */
-const compare = $("#compare"), split = $("#split"), G = D.grade || {};
-if (G.before && G.after) {
-  $("#before").src = src(G.before); $("#after").src = src(G.after); $("#before").style.filter = "none"; $(".looks").hidden = true;
-} else {
-  $("#afterTag").textContent = "After · sample frame";
-  const LOOKS = [["Cinematic","saturate(1.15) contrast(1.08)"],["Warm film","sepia(.3) saturate(1.35) contrast(1.05) hue-rotate(-8deg)"],["Cool night","hue-rotate(18deg) saturate(1.05) contrast(1.15) brightness(.92)"],["Black & white","grayscale(1) contrast(1.3)"]];
-  const FRAMES = [["Landscape","dunes"],["Street","city"],["Product","product"]];
-  const setFrame = k => { $("#after").src = $("#before").src = src(k); };
-  setFrame("dunes"); $("#after").style.filter = LOOKS[0][1];
-  pills($("#looks"), LOOKS.map(l=>l[0]), (_,i) => $("#after").style.filter = LOOKS[i][1]);
-  pills($("#frames"), FRAMES.map(f=>f[0]), (_,i) => setFrame(FRAMES[i][1]));
+  if (!mine.length) { const e = el("div","empty"); e.append(el("b","",name), el("span","","Projects are coming soon.")); panel.append(e); }
+  if (animate && !still) [...panel.querySelectorAll(".card,.empty")].forEach((c,i) => c.animate([{opacity:0,translate:"0 34px",scale:.92},{opacity:1,translate:"0 0",scale:1}],{duration:480,delay:i*70,easing:"cubic-bezier(.2,.9,.2,1)",fill:"backwards"}));
 }
+types.forEach(name => {
+  const b = el("button","type pop"); b.type = "button"; b.dataset.type = name;
+  const n = projects.filter(p => p.type===name).length; b.append(el("span","",name)); if (n) b.append(el("small","",n));
+  b.onclick = () => openType(name, true); $("#filters").append(b);
+});
+if (types.length) { openType(types.find(n => projects.some(p => p.type===n)) || types[0]); $("#workNote").textContent = "Choose a type to see the work."; }
+else drop("work");
+
+/* color: shown only when real before and after frames exist */
+const compare = $("#compare"), split = $("#split"), G = D.grade || {};
+if (src(G.before) && src(G.after)) { $("#before").src = src(G.before); $("#after").src = src(G.after); $("#before").style.filter = "none"; }
 split.oninput = () => compare.style.setProperty("--p", split.value+"%");
-if (show.color === false) drop("color");
+if (show.color === false || !src(G.before) || !src(G.after)) drop("color");
 
 /* services, process, about */
-list("services").forEach(s => { const r = el("article","svc"), t = el("div"); t.append(el("h3","",s.name), el("p","",s.text)); r.append(img(s.image || "motion"), t); $("#svcs").append(r); });
+list("services").forEach(s => { const r = el("article","svc"); r.append(el("h3","",s.name), el("p","",s.text)); $("#svcs").append(r); });
 if (show.services === false || !list("services").length) drop("services");
 list("steps").forEach((x,i) => {
   const s = el("article","step"); s.append(el("span","num",i+1), el("h3","",x.name), el("p","",x.text)); if (x.result) s.append(el("small","","You get: "+x.result));
   $("#stack").append(s);
 });
 if (show.process === false || !list("steps").length) drop("process");
-if (P.photo) $("#portrait").replaceChildren(img(P.photo, P.name));
+if (src(P.photo)) $("#portrait").replaceChildren(img(P.photo, P.name));
 list("stats").forEach(x => { const d = el("div"); d.append(el("b","",x.value), el("span","",x.label)); $("#stats").append(d); });
 $("#stats").hidden = !list("stats").length;
 list("tools").forEach(x => { const t = el("div","tool"); t.append(el("b","",x.name), el("span","",x.use)); $("#tools").append(t); });
@@ -383,11 +375,49 @@ if (P.email) {
 list("socials").forEach(x => row(glyph(x.label+" "+x.url), x.label, x.text || x.url, web(x.url)));
 
 const links = [...document.querySelectorAll(".links a")];
-addEventListener("scroll", () => {
+function onScroll(){
+  const max = document.documentElement.scrollHeight - innerHeight;
+  $("#progress").style.transform = `scaleX(${max > 0 ? Math.min(1,Math.max(0,scrollY/max)) : 0})`;
   let on; links.forEach(a => { if (!a.hidden && $(a.getAttribute("href")).getBoundingClientRect().top < innerHeight*.4) on = a; });
-  if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) on = links[links.length-1];
+  if (max > 0 && scrollY >= max - 4) on = links[links.length-1];
   links.forEach(a => a.classList.toggle("on", a===on));
-}, {passive:true});
+}
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+/* hover pop */
+document.querySelectorAll(".svc,.step,.quote,.stats div,.tool,.crow,.btn,.links a,.frame").forEach(e => e.classList.add("pop"));
+
+/* reveal while scrolling: everything is visible at rest, then eases in as it enters */
+if (!still && "IntersectionObserver" in window) {
+  const io = new IntersectionObserver(es => es.filter(e => e.isIntersecting).forEach((e,i) => {
+    io.unobserve(e.target);
+    e.target.animate([{opacity:.05,translate:"0 56px",scale:.94},{opacity:1,translate:"0 0",scale:1}],{duration:750,delay:i*90,easing:"cubic-bezier(.2,.9,.2,1)",fill:"backwards"});
+  }), {threshold:.12});
+  document.querySelectorAll(".shead,.lead,.bio,.stats,.types,#panel,.svc,.step,.quote,.ctext,.crow,#contact .frame").forEach(e => io.observe(e));
+}
+
+/* mouse: a ring and soft light follow the pointer; the ring stretches while scrolling */
+if (!still && matchMedia("(hover:hover) and (pointer:fine)").matches) {
+  const ring = $("#cring"), dot = ring.firstElementChild, glow = $("#glow");
+  let x = 0, y = 0, rx = 0, ry = 0, gx = 0, gy = 0, lastY = scrollY, stretch = 0, running = false, seen = false;
+  const frame = () => {
+    rx += (x-rx)*.22; ry += (y-ry)*.22; gx += (x-gx)*.08; gy += (y-gy)*.08;
+    const v = scrollY - lastY; lastY = scrollY;
+    stretch += (Math.max(-1,Math.min(1,v/45)) - stretch)*.18;
+    const k = Math.abs(stretch);
+    ring.style.translate = `${rx}px ${ry + stretch*14}px`; dot.style.transform = `scale(${1-k*.35},${1+k*.9})`; glow.style.translate = `${gx}px ${gy}px`;
+    if (Math.abs(x-gx)+Math.abs(y-gy) > .4 || k > .005) requestAnimationFrame(frame); else running = false;
+  };
+  const wake = () => { if (!running) { running = true; requestAnimationFrame(frame); } };
+  addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse") return;
+    x = e.clientX; y = e.clientY;
+    if (!seen) { seen = true; rx = gx = x; ry = gy = y; }
+    document.body.classList.add("mouse"); ring.classList.toggle("over", !!e.target.closest("a,button,input,.pop")); wake();
+  }, {passive:true});
+  addEventListener("scroll", () => { if (seen) wake(); }, {passive:true});
+  document.documentElement.addEventListener("pointerleave", () => document.body.classList.remove("mouse"));
+}
 if (location.hash.length > 1) { const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
 })();
 </script>
