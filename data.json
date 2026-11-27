@@ -75,7 +75,18 @@
       "image": ""
     }
   ],
-  "projects": [],
+  "projects": [
+    {
+      "title": "Promotional",
+      "type": "Commercial",
+      "shape": "wide",
+      "video": "https://drive.google.com/file/d/1SvHUqApKm2ibDl-VzSy-WW9gHfpPmFdx/view?usp=drive_link",
+      "image": "",
+      "client": "",
+      "role": "Edit & Motion",
+      "about": ""
+    }
+  ],
   "services": [
     {
       "name": "Commercials",
