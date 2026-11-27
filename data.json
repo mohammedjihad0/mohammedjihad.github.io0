@@ -189,6 +189,6 @@
     "services": true,
     "process": true,
     "portrait": false,
-    "stats": false
+    "stats": true
   }
 }
