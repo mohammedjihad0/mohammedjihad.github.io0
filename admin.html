@@ -106,6 +106,17 @@ textarea{min-height:96px;resize:vertical}
 .todo{display:flex;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;font-size:.9rem}
 .todo button{flex:none}
 
+/* language */
+html[lang=bn] .l-en,html[lang=en] .l-bn{display:none!important}
+.lang{display:inline-flex;gap:3px;padding:3px;border:1px solid var(--line);border-radius:12px;background:var(--field);justify-self:start}
+.lang button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:9px;font-size:.82rem}
+.lang button[aria-pressed=true]{background:var(--bordo);color:#fff7ee}
+.side .lang{display:grid;grid-template-columns:1fr 1fr;flex:none;justify-self:stretch;background:rgba(0,0,0,.2);border-color:rgba(245,218,191,.18)}
+.side .lang button{justify-content:center;text-align:center;color:var(--cream);padding:6px 8px}
+.side .lang button[aria-pressed=true]{background:var(--cream);color:var(--bordo);font-weight:600}
+.gatehead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:.92rem}
+
 /* message */
 #status{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));translate:-50% 0;z-index:40;width:max-content;max-width:min(620px,calc(100vw - 28px));margin:0;padding:10px 18px;border-radius:12px;background:var(--green-deep);color:var(--cream);font-size:.88rem;text-align:center;box-shadow:0 14px 34px -14px rgba(0,0,0,.6)}
 #status:empty{display:none}
@@ -116,44 +127,45 @@ textarea{min-height:96px;resize:vertical}
 <body>
 <div class="gate" id="gate">
   <form id="login">
-    <h1>Portfolio Admin</h1>
-    <h2>GitHub দিয়ে লগইন</h2>
-    <p class="muted">টোকেনটা শুধু এই ব্রাউজার থেকে api.github.com-এ যায়। প্রথমবার টোকেন বানাতে:</p>
+    <div class="gatehead"><h1>Portfolio Admin</h1><div class="lang" role="group" aria-label="ভাষা / Language"><button type="button" data-lang="bn" aria-pressed="true">বাংলা</button><button type="button" data-lang="en" aria-pressed="false">English</button></div></div>
+    <h2><span class="l-bn">GitHub দিয়ে লগইন</span><span class="l-en">Sign in with GitHub</span></h2>
+    <p class="muted"><span class="l-bn">টোকেনটা শুধু এই ব্রাউজার থেকে api.github.com-এ যায়। প্রথমবার টোকেন বানাতে:</span><span class="l-en">The token is sent only from this browser to api.github.com. To create one the first time:</span></p>
     <ol class="muted">
-      <li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub-এ Fine-grained token</a> পেজ খুলুন</li>
-      <li>Repository access: <b>Only select repositories</b> থেকে শুধু পোর্টফোলিওর রিপো বেছে নিন</li>
+      <li><span class="l-bn"></span><span class="l-en">Open the </span><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener"><span class="l-bn">GitHub-এ Fine-grained token</span><span class="l-en">GitHub fine-grained token</span></a><span class="l-bn"> পেজ খুলুন</span><span class="l-en"> page</span></li>
+      <li>Repository access: <b>Only select repositories</b><span class="l-bn"> থেকে শুধু পোর্টফোলিওর রিপো বেছে নিন</span><span class="l-en">, then pick only your portfolio repository</span></li>
       <li>Permissions: <b>Contents</b> = <b>Read and write</b></li>
-      <li>মেয়াদ দিয়ে Generate করুন, তারপর টোকেন কপি করে নিচে দিন</li>
+      <li><span class="l-bn">মেয়াদ দিয়ে Generate করুন, তারপর টোকেন কপি করে নিচে দিন</span><span class="l-en">Set an expiry, press Generate, then copy the token and paste it below</span></li>
     </ol>
     <div class="two">
       <label for="owner">GitHub username<input id="owner" required></label>
-      <label for="repo">রিপোর নাম<input id="repo" required></label>
+      <label for="repo"><span class="l-bn">রিপোর নাম</span><span class="l-en">Repository name</span><input id="repo" required></label>
     </div>
-    <label for="branch">ব্রাঞ্চ<input id="branch" value="main" required></label>
+    <label for="branch"><span class="l-bn">ব্রাঞ্চ</span><span class="l-en">Branch</span><input id="branch" value="main" required></label>
     <label for="token">Access token<input id="token" type="password" autocomplete="off" required></label>
-    <label class="check" for="remember"><input type="checkbox" id="remember"> এই ডিভাইসে মনে রাখো (শুধু নিজের কম্পিউটারে)</label>
-    <div class="acts" style="justify-content:flex-start"><button class="hot" type="submit">লগইন</button><button type="button" id="offline">টোকেন ছাড়া সম্পাদনা</button></div>
+    <label class="check" for="remember"><input type="checkbox" id="remember"> <span class="l-bn">এই ডিভাইসে মনে রাখো (শুধু নিজের কম্পিউটারে)</span><span class="l-en">Remember me on this device (your own computer only)</span></label>
+    <div class="acts" style="justify-content:flex-start"><button class="hot" type="submit"><span class="l-bn">লগইন</span><span class="l-en">Sign in</span></button><button type="button" id="offline"><span class="l-bn">টোকেন ছাড়া সম্পাদনা</span><span class="l-en">Edit without a token</span></button></div>
   </form>
 </div>
 
 <div class="shell" id="app" hidden>
   <aside class="side" id="side">
     <div class="brand"><span class="mark" id="mark">MJ</span><div><b>Portfolio Admin</b><small id="who"></small></div></div>
-    <nav id="tabs" aria-label="অ্যাডমিন মেনু"></nav>
-    <div class="side-foot"><a class="button" id="view" href="./" target="_blank" rel="noopener">সাইট দেখুন</a><button id="logout" type="button">লগ আউট</button></div>
+    <div class="lang" role="group" aria-label="ভাষা / Language"><button type="button" data-lang="bn" aria-pressed="true">বাংলা</button><button type="button" data-lang="en" aria-pressed="false">English</button></div>
+    <nav id="tabs"></nav>
+    <div class="side-foot"><a class="button" id="view" href="./" target="_blank" rel="noopener"><span class="l-bn">সাইট দেখুন</span><span class="l-en">View site</span></a><button id="logout" type="button"><span class="l-bn">লগ আউট</span><span class="l-en">Log out</span></button></div>
   </aside>
   <div class="shade" id="shade"></div>
   <div class="main">
     <header class="topbar">
-      <button type="button" id="menu" aria-label="মেনু খুলুন" aria-expanded="false" aria-controls="side"></button>
+      <button type="button" id="menu" aria-expanded="false" aria-controls="side"></button>
       <div class="titles"><h1 id="title"></h1><p id="subtitle"></p></div>
-      <button type="button" id="download" hidden>data.json ডাউনলোড</button>
-      <button type="button" class="hot" id="publish" hidden><span>পাবলিশ করো</span></button>
+      <button type="button" id="download" hidden><span class="l-bn">data.json ডাউনলোড</span><span class="l-en">Download data.json</span></button>
+      <button type="button" class="hot" id="publish" hidden><span><span class="l-bn">পাবলিশ করো</span><span class="l-en">Publish</span></span></button>
     </header>
     <main id="panel"></main>
   </div>
 </div>
-<p id="status" role="status">লগইন করুন।</p>
+<p id="status" role="status"><span class="l-bn">লগইন করুন।</span><span class="l-en">Please sign in.</span></p>
 
 <script>
 (function(){
@@ -162,13 +174,18 @@ const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls)
 const btn = (text, fn, cls="small") => { const b = el("button",cls,text); b.type = "button"; b.onclick = fn; return b; };
 const KEY = "portfolio-admin";
 let D = null, auth = null, sha = null, dirty = false, tab = "dashboard", editing = null, busy = false, loaded = "", previews = new Map(), lastPublish = "";
+/* language: every visible string is written as T("বাংলা", "English") */
+const LANG_KEY = "portfolio-admin-lang";
+let lang = "bn";
+try { if (localStorage.getItem(LANG_KEY) === "en") lang = "en"; } catch (e) {}
+const T = (bn, en) => lang === "en" ? en : bn;
 /* icons: Font Awesome Free (https://fontawesome.com/license/free), CC BY 4.0 */
-const ICONS = {"dashboard": ["0 0 512 512", "M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM256 416c35.3 0 64-28.7 64-64 0-16.2-6-31.1-16-42.3l69.5-138.9c5.9-11.9 1.1-26.3-10.7-32.2s-26.3-1.1-32.2 10.7L261.1 288.2c-1.7-.1-3.4-.2-5.1-.2-35.3 0-64 28.7-64 64s28.7 64 64 64zM176 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM96 288a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm352-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"], "projects": ["0 0 448 512", "M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM48 368l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm304-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM48 240l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm304-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM48 112l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16L64 96c-8.8 0-16 7.2-16 16zM352 96c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0z"], "types": ["0 0 576 512", "M401.2 39.1L549.4 189.4c27.7 28.1 27.7 73.1 0 101.2L393 448.9c-9.3 9.4-24.5 9.5-33.9 .2s-9.5-24.5-.2-33.9L515.3 256.8c9.2-9.3 9.2-24.4 0-33.7L367 72.9c-9.3-9.4-9.2-24.6 .2-33.9s24.6-9.2 33.9 .2zM32.1 229.5L32.1 96c0-35.3 28.7-64 64-64l133.5 0c17 0 33.3 6.7 45.3 18.7l144 144c25 25 25 65.5 0 90.5L285.4 418.7c-25 25-65.5 25-90.5 0l-144-144c-12-12-18.7-28.3-18.7-45.3zm144-85.5a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"], "home": ["0 0 512 512", "M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272l16 0 0 176c0 35.3 28.7 64 64 64l288 0c35.3 0 64-28.7 64-64l0-176 16 0c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1l-224-208zM240 320l32 0c26.5 0 48 21.5 48 48l0 96-128 0 0-96c0-26.5 21.5-48 48-48z"], "about": ["0 0 448 512", "M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"], "contact": ["0 0 512 512", "M48 64c-26.5 0-48 21.5-48 48 0 15.1 7.1 29.3 19.2 38.4l208 156c17.1 12.8 40.5 12.8 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48L48 64zM0 196L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-188-198.4 148.8c-34.1 25.6-81.1 25.6-115.2 0L0 196z"], "services": ["0 0 512 512", "M200 48l112 0c4.4 0 8 3.6 8 8l0 40-128 0 0-40c0-4.4 3.6-8 8-8zm-56 8l0 40-80 0C28.7 96 0 124.7 0 160l0 96 512 0 0-96c0-35.3-28.7-64-64-64l-80 0 0-40c0-30.9-25.1-56-56-56L200 0c-30.9 0-56 25.1-56 56zM512 304l-192 0 0 16c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-16-192 0 0 112c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-112z"], "process": ["0 0 512 512", "M133.8 36.3c10.9 7.6 13.5 22.6 5.9 33.4l-56 80c-4.1 5.8-10.5 9.5-17.6 10.1S52 158 47 153L7 113C-2.3 103.6-2.3 88.4 7 79S31.6 69.7 41 79l19.8 19.8 39.6-56.6c7.6-10.9 22.6-13.5 33.4-5.9zm0 160c10.9 7.6 13.5 22.6 5.9 33.4l-56 80c-4.1 5.8-10.5 9.5-17.6 10.1S52 318 47 313L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l19.8 19.8 39.6-56.6c7.6-10.9 22.6-13.5 33.4-5.9zM224 96c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32l288 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-288 0c-17.7 0-32-14.3-32-32zM64 376a40 40 0 1 1 0 80 40 40 0 1 1 0-80z"], "color": ["0 0 512 512", "M512 256c0 .9 0 1.8 0 2.7-.4 36.5-33.6 61.3-70.1 61.3L344 320c-26.5 0-48 21.5-48 48 0 3.4 .4 6.7 1 9.9 2.1 10.2 6.5 20 10.8 29.9 6.1 13.8 12.1 27.5 12.1 42 0 31.8-21.6 60.7-53.4 62-3.5 .1-7 .2-10.6 .2-141.4 0-256-114.6-256-256S114.6 0 256 0 512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"], "feedback": ["0 0 512 512", "M512 240c0 132.5-114.6 240-256 240-37.1 0-72.3-7.4-104.1-20.7L33.5 510.1c-9.4 4-20.2 1.7-27.1-5.8S-2 485.8 2.8 476.8l48.8-92.2C19.2 344.3 0 294.3 0 240 0 107.5 114.6 0 256 0S512 107.5 512 240z"], "visibility": ["0 0 576 512", "M288 32c-80.8 0-145.5 36.8-192.6 80.6-46.8 43.5-78.1 95.4-93 131.1-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64-11.5 0-22.3-3-31.7-8.4-1 10.9-.1 22.1 2.9 33.2 13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-12.2-45.7-55.5-74.8-101.1-70.8 5.3 9.3 8.4 20.1 8.4 31.7z"], "site": ["0 0 512 512", "M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"], "logout": ["0 0 512 512", "M505 273c9.4-9.4 9.4-24.6 0-33.9L361 95c-6.9-6.9-17.2-8.9-26.2-5.2S320 102.3 320 112l0 80-112 0c-26.5 0-48 21.5-48 48l0 32c0 26.5 21.5 48 48 48l112 0 0 80c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2L505 273zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"], "menu": ["0 0 448 512", "M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"], "publish": ["0 0 576 512", "M144 480c-79.5 0-144-64.5-144-144 0-63.4 41-117.2 97.9-136.5-1.3-7.7-1.9-15.5-1.9-23.5 0-79.5 64.5-144 144-144 55.4 0 103.5 31.3 127.6 77.1 14.2-8.3 30.8-13.1 48.4-13.1 53 0 96 43 96 96 0 15.7-3.8 30.6-10.5 43.7 44 20.3 74.5 64.7 74.5 116.3 0 70.7-57.3 128-128 128l-304 0zM305 191c-9.4-9.4-24.6-9.4-33.9 0l-72 72c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l31-31 0 102.1c0 13.3 10.7 24 24 24s24-10.7 24-24l0-102.1 31 31c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-72-72z"], "plus": ["0 0 448 512", "M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"], "link": ["0 0 576 512", "M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"], "clock": ["0 0 512 512", "M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"]};
+const ICONS = {"start": ["0 0 448 512", "M128 0c17.7 0 32 14.3 32 32l0 32 128 0 0-32c0-17.7 14.3-32 32-32s32 14.3 32 32l0 32 48 0c26.5 0 48 21.5 48 48l0 48-448 0 0-48c0-26.5 21.5-48 48-48l48 0 0-32c0-17.7 14.3-32 32-32zM0 192l448 0 0 272c0 26.5-21.5 48-48 48L48 512c-26.5 0-48-21.5-48-48L0 192z"], "dashboard": ["0 0 512 512", "M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM256 416c35.3 0 64-28.7 64-64 0-16.2-6-31.1-16-42.3l69.5-138.9c5.9-11.9 1.1-26.3-10.7-32.2s-26.3-1.1-32.2 10.7L261.1 288.2c-1.7-.1-3.4-.2-5.1-.2-35.3 0-64 28.7-64 64s28.7 64 64 64zM176 144a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM96 288a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm352-32a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"], "projects": ["0 0 448 512", "M0 96C0 60.7 28.7 32 64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96zM48 368l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm304-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM48 240l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0c-8.8 0-16 7.2-16 16zm304-16c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0zM48 112l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16L64 96c-8.8 0-16 7.2-16 16zM352 96c-8.8 0-16 7.2-16 16l0 32c0 8.8 7.2 16 16 16l32 0c8.8 0 16-7.2 16-16l0-32c0-8.8-7.2-16-16-16l-32 0z"], "types": ["0 0 576 512", "M401.2 39.1L549.4 189.4c27.7 28.1 27.7 73.1 0 101.2L393 448.9c-9.3 9.4-24.5 9.5-33.9 .2s-9.5-24.5-.2-33.9L515.3 256.8c9.2-9.3 9.2-24.4 0-33.7L367 72.9c-9.3-9.4-9.2-24.6 .2-33.9s24.6-9.2 33.9 .2zM32.1 229.5L32.1 96c0-35.3 28.7-64 64-64l133.5 0c17 0 33.3 6.7 45.3 18.7l144 144c25 25 25 65.5 0 90.5L285.4 418.7c-25 25-65.5 25-90.5 0l-144-144c-12-12-18.7-28.3-18.7-45.3zm144-85.5a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"], "home": ["0 0 512 512", "M277.8 8.6c-12.3-11.4-31.3-11.4-43.5 0l-224 208c-9.6 9-12.8 22.9-8 35.1S18.8 272 32 272l16 0 0 176c0 35.3 28.7 64 64 64l288 0c35.3 0 64-28.7 64-64l0-176 16 0c13.2 0 25-8.1 29.8-20.3s1.6-26.2-8-35.1l-224-208zM240 320l32 0c26.5 0 48 21.5 48 48l0 96-128 0 0-96c0-26.5 21.5-48 48-48z"], "about": ["0 0 448 512", "M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l356.6 0c16.4 0 29.7-13.3 29.7-29.7 0-98.5-79.8-178.3-178.3-178.3l-59.4 0z"], "contact": ["0 0 512 512", "M48 64c-26.5 0-48 21.5-48 48 0 15.1 7.1 29.3 19.2 38.4l208 156c17.1 12.8 40.5 12.8 57.6 0l208-156c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48L48 64zM0 196L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-188-198.4 148.8c-34.1 25.6-81.1 25.6-115.2 0L0 196z"], "services": ["0 0 512 512", "M200 48l112 0c4.4 0 8 3.6 8 8l0 40-128 0 0-40c0-4.4 3.6-8 8-8zm-56 8l0 40-80 0C28.7 96 0 124.7 0 160l0 96 512 0 0-96c0-35.3-28.7-64-64-64l-80 0 0-40c0-30.9-25.1-56-56-56L200 0c-30.9 0-56 25.1-56 56zM512 304l-192 0 0 16c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-16-192 0 0 112c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-112z"], "process": ["0 0 512 512", "M133.8 36.3c10.9 7.6 13.5 22.6 5.9 33.4l-56 80c-4.1 5.8-10.5 9.5-17.6 10.1S52 158 47 153L7 113C-2.3 103.6-2.3 88.4 7 79S31.6 69.7 41 79l19.8 19.8 39.6-56.6c7.6-10.9 22.6-13.5 33.4-5.9zm0 160c10.9 7.6 13.5 22.6 5.9 33.4l-56 80c-4.1 5.8-10.5 9.5-17.6 10.1S52 318 47 313L7 273c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l19.8 19.8 39.6-56.6c7.6-10.9 22.6-13.5 33.4-5.9zM224 96c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zm0 160c0-17.7 14.3-32 32-32l224 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32zM160 416c0-17.7 14.3-32 32-32l288 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-288 0c-17.7 0-32-14.3-32-32zM64 376a40 40 0 1 1 0 80 40 40 0 1 1 0-80z"], "color": ["0 0 512 512", "M512 256c0 .9 0 1.8 0 2.7-.4 36.5-33.6 61.3-70.1 61.3L344 320c-26.5 0-48 21.5-48 48 0 3.4 .4 6.7 1 9.9 2.1 10.2 6.5 20 10.8 29.9 6.1 13.8 12.1 27.5 12.1 42 0 31.8-21.6 60.7-53.4 62-3.5 .1-7 .2-10.6 .2-141.4 0-256-114.6-256-256S114.6 0 256 0 512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"], "feedback": ["0 0 512 512", "M512 240c0 132.5-114.6 240-256 240-37.1 0-72.3-7.4-104.1-20.7L33.5 510.1c-9.4 4-20.2 1.7-27.1-5.8S-2 485.8 2.8 476.8l48.8-92.2C19.2 344.3 0 294.3 0 240 0 107.5 114.6 0 256 0S512 107.5 512 240z"], "visibility": ["0 0 576 512", "M288 32c-80.8 0-145.5 36.8-192.6 80.6-46.8 43.5-78.1 95.4-93 131.1-3.3 7.9-3.3 16.7 0 24.6 14.9 35.7 46.2 87.7 93 131.1 47.1 43.7 111.8 80.6 192.6 80.6s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1 3.3-7.9 3.3-16.7 0-24.6-14.9-35.7-46.2-87.7-93-131.1-47.1-43.7-111.8-80.6-192.6-80.6zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64-11.5 0-22.3-3-31.7-8.4-1 10.9-.1 22.1 2.9 33.2 13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-12.2-45.7-55.5-74.8-101.1-70.8 5.3 9.3 8.4 20.1 8.4 31.7z"], "site": ["0 0 512 512", "M290.4 19.8C295.4 7.8 307.1 0 320 0L480 0c17.7 0 32 14.3 32 32l0 160c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9L400 157.3 246.6 310.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L354.7 112 297.4 54.6c-9.2-9.2-11.9-22.9-6.9-34.9zM0 176c0-44.2 35.8-80 80-80l80 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-80 0c-8.8 0-16 7.2-16 16l0 256c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16l0-80c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80c0 44.2-35.8 80-80 80L80 512c-44.2 0-80-35.8-80-80L0 176z"], "logout": ["0 0 512 512", "M505 273c9.4-9.4 9.4-24.6 0-33.9L361 95c-6.9-6.9-17.2-8.9-26.2-5.2S320 102.3 320 112l0 80-112 0c-26.5 0-48 21.5-48 48l0 32c0 26.5 21.5 48 48 48l112 0 0 80c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2L505 273zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"], "menu": ["0 0 448 512", "M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"], "publish": ["0 0 576 512", "M144 480c-79.5 0-144-64.5-144-144 0-63.4 41-117.2 97.9-136.5-1.3-7.7-1.9-15.5-1.9-23.5 0-79.5 64.5-144 144-144 55.4 0 103.5 31.3 127.6 77.1 14.2-8.3 30.8-13.1 48.4-13.1 53 0 96 43 96 96 0 15.7-3.8 30.6-10.5 43.7 44 20.3 74.5 64.7 74.5 116.3 0 70.7-57.3 128-128 128l-304 0zM305 191c-9.4-9.4-24.6-9.4-33.9 0l-72 72c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l31-31 0 102.1c0 13.3 10.7 24 24 24s24-10.7 24-24l0-102.1 31 31c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-72-72z"], "plus": ["0 0 448 512", "M256 64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 160-160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l160 0 0 160c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160 160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-160 0 0-160z"], "link": ["0 0 576 512", "M419.5 96c-16.6 0-32.7 4.5-46.8 12.7-15.8-16-34.2-29.4-54.5-39.5 28.2-24 64.1-37.2 101.3-37.2 86.4 0 156.5 70 156.5 156.5 0 41.5-16.5 81.3-45.8 110.6l-71.1 71.1c-29.3 29.3-69.1 45.8-110.6 45.8-86.4 0-156.5-70-156.5-156.5 0-1.5 0-3 .1-4.5 .5-17.7 15.2-31.6 32.9-31.1s31.6 15.2 31.1 32.9c0 .9 0 1.8 0 2.6 0 51.1 41.4 92.5 92.5 92.5 24.5 0 48-9.7 65.4-27.1l71.1-71.1c17.3-17.3 27.1-40.9 27.1-65.4 0-51.1-41.4-92.5-92.5-92.5zM275.2 173.3c-1.9-.8-3.8-1.9-5.5-3.1-12.6-6.5-27-10.2-42.1-10.2-24.5 0-48 9.7-65.4 27.1L91.1 258.2c-17.3 17.3-27.1 40.9-27.1 65.4 0 51.1 41.4 92.5 92.5 92.5 16.5 0 32.6-4.4 46.7-12.6 15.8 16 34.2 29.4 54.6 39.5-28.2 23.9-64 37.2-101.3 37.2-86.4 0-156.5-70-156.5-156.5 0-41.5 16.5-81.3 45.8-110.6l71.1-71.1c29.3-29.3 69.1-45.8 110.6-45.8 86.6 0 156.5 70.6 156.5 156.9 0 1.3 0 2.6 0 3.9-.4 17.7-15.1 31.6-32.8 31.2s-31.6-15.1-31.2-32.8c0-.8 0-1.5 0-2.3 0-33.7-18-63.3-44.8-79.6z"], "clock": ["0 0 512 512", "M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"]};
 function ic(name){ const NS = "http://www.w3.org/2000/svg", s = document.createElementNS(NS,"svg"), p = document.createElementNS(NS,"path"); s.setAttribute("viewBox", ICONS[name][0]); s.setAttribute("class","ic"); s.setAttribute("aria-hidden","true"); p.setAttribute("d", ICONS[name][1]); s.append(p); return s; }
 
 let fade = 0;
 const say = (t, kind="") => { $("#status").textContent = t; $("#status").className = kind; $("#publish").classList.toggle("pending", dirty); clearTimeout(fade); if (kind !== "bad") fade = setTimeout(() => $("#status").textContent = "", 7000); };
-const changed = () => { dirty = true; say(auth ? "পরিবর্তন হয়েছে। সাইটে দেখাতে “পাবলিশ করো” চাপুন।" : "পরিবর্তন হয়েছে। data.json ডাউনলোড করে GitHub-এ আপলোড করুন।"); };
+const changed = () => { dirty = true; say(auth ? T("পরিবর্তন হয়েছে। সাইটে দেখাতে “পাবলিশ করো” চাপুন।", "Changed. Press “Publish” to show it on your site.") : T("পরিবর্তন হয়েছে। data.json ডাউনলোড করে GitHub-এ আপলোড করুন।", "Changed. Download data.json and upload it to GitHub.")); };
 addEventListener("beforeunload", e => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
 
 /* ---------- GitHub ---------- */
@@ -183,7 +200,7 @@ async function gh(path, options={}){
     headers:{Authorization:`Bearer ${auth.token}`, Accept:"application/vnd.github+json", ...(options.body ? {"Content-Type":"application/json"} : {})}
   });
   if (!r.ok) {
-    const why = {401:"টোকেন ভুল বা মেয়াদ শেষ।",403:"টোকেনের অনুমতি নেই। Contents: Read and write দিন।",404:"রিপো, ব্রাঞ্চ বা ফাইল পাওয়া যায়নি।",409:"ফাইলটা অন্য কোথাও থেকে বদলেছে।",422:"GitHub অনুরোধটা নেয়নি।"}[r.status] || "GitHub সমস্যা।";
+    const why = {401:T("টোকেন ভুল বা মেয়াদ শেষ।","The token is wrong or has expired."),403:T("টোকেনের অনুমতি নেই। Contents: Read and write দিন।","The token has no permission. Give it Contents: Read and write."),404:T("রিপো, ব্রাঞ্চ বা ফাইল পাওয়া যায়নি।","Repository, branch or file not found."),409:T("ফাইলটা অন্য কোথাও থেকে বদলেছে।","The file was changed somewhere else."),422:T("GitHub অনুরোধটা নেয়নি।","GitHub rejected the request.")}[r.status] || T("GitHub সমস্যা।","GitHub error.");
     const err = new Error(`${why} (${r.status})`); err.status = r.status; throw err;
   }
   return r.json();
@@ -192,13 +209,13 @@ const toB64 = text => { const bytes = new TextEncoder().encode(text); let s = ""
 const fromB64 = b64 => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g,"")), c => c.charCodeAt(0)));
 
 function normalise(d){
-  if (!d || typeof d !== "object" || !d.profile) throw new Error("data.json-এর গঠন ঠিক নেই।");
+  if (!d || typeof d !== "object" || !d.profile) throw new Error(T("data.json-এর গঠন ঠিক নেই।", "data.json is not in the expected format."));
   ["socials","types","projects","services","steps","tools","stats","experience","quotes"].forEach(k => { if (!Array.isArray(d[k])) d[k] = []; });
-  d.grade ||= {before:"",after:""}; d.show ||= {};
+  d.grade ||= {before:"",after:""}; d.show ||= {}; d.start ||= {};
   return d;
 }
 async function login(creds, remember){
-  auth = creds; say("সংযোগ হচ্ছে…");
+  auth = creds; say(T("সংযোগ হচ্ছে…", "Connecting…"));
   try {
     const f = await gh(`/contents/data.json?ref=${encodeURIComponent(auth.branch)}`);
     sha = f.sha;
@@ -208,24 +225,23 @@ async function login(creds, remember){
       sessionStorage.setItem(KEY, JSON.stringify(auth));
       if (remember) localStorage.setItem(KEY, JSON.stringify(auth)); else localStorage.removeItem(KEY);
     } catch (e) {}
-    $("#token").value = ""; start(); say("লগইন হয়েছে।","good");
+    $("#token").value = ""; start(); say(T("লগইন হয়েছে।", "Signed in."),"good");
     gh(`/commits?path=data.json&per_page=1&sha=${encodeURIComponent(auth.branch)}`).then(c => { lastPublish = c?.[0]?.commit?.committer?.date || ""; if (tab === "dashboard") render(); }).catch(() => {});
   } catch (err) { auth = null; say(err.message,"bad"); }
 }
 $("#login").onsubmit = e => { e.preventDefault(); login({owner:$("#owner").value.trim(), repo:$("#repo").value.trim(), branch:$("#branch").value.trim(), token:$("#token").value.trim()}, $("#remember").checked); };
 $("#offline").onclick = async () => {
-  try { const r = await fetch("data.json",{cache:"no-store"}); if (!r.ok) throw new Error(); D = normalise(await r.json()); auth = null; start(); say("টোকেন ছাড়া মোড। শেষে data.json ডাউনলোড করে আপলোড করুন।"); }
-  catch (e) { say("data.json পড়া যায়নি। পেজটা হোস্ট করা সাইট থেকে খুলুন।","bad"); }
+  try { const r = await fetch("data.json",{cache:"no-store"}); if (!r.ok) throw new Error(); D = normalise(await r.json()); auth = null; start(); say(T("টোকেন ছাড়া মোড। শেষে data.json ডাউনলোড করে আপলোড করুন।", "Editing without a token. When you finish, download data.json and upload it.")); }
+  catch (e) { say(T("data.json পড়া যায়নি। পেজটা হোস্ট করা সাইট থেকে খুলুন।", "Could not read data.json. Open this page from your hosted site."),"bad"); }
 };
 $("#logout").onclick = () => {
-  if (dirty && $("#logout").dataset.sure !== "1") { $("#logout").dataset.sure = "1"; say("পাবলিশ না করা পরিবর্তন আছে। বের হতে আবার “লগ আউট” চাপুন।","bad"); return; }
+  if (dirty && $("#logout").dataset.sure !== "1") { $("#logout").dataset.sure = "1"; say(T("পাবলিশ না করা পরিবর্তন আছে। বের হতে আবার “লগ আউট” চাপুন।", "You have unpublished changes. Press “Log out” again to leave."),"bad"); return; }
   try { sessionStorage.removeItem(KEY); localStorage.removeItem(KEY); } catch (e) {}
   dirty = false; location.reload();
 };
 function start(){
   $("#gate").hidden = true; $("#app").hidden = false;
   $("#publish").hidden = !auth; $("#download").hidden = false;
-  $("#who").textContent = auth ? `${auth.owner}/${auth.repo}` : "টোকেন ছাড়া মোড";
   const wanted = location.hash.slice(1); if (PAGES.some(p => p.key === wanted)) tab = wanted;
   render();
 }
@@ -237,7 +253,7 @@ async function publish(){
     if (!commitDraft()) { tab = "projects"; const why = $("#status").textContent; render(); say(why,"bad"); return; }
     editing = null; changed(); render();
   }
-  if (JSON.stringify(D) === loaded) { dirty = false; say("কোনো নতুন পরিবর্তন নেই, তাই কিছু পাবলিশ করা হয়নি।","bad"); return; }
+  if (JSON.stringify(D) === loaded) { dirty = false; say(T("কোনো নতুন পরিবর্তন নেই, তাই কিছু পাবলিশ করা হয়নি।", "There are no new changes, so nothing was published."),"bad"); return; }
   busy = true; $("#publish").disabled = true;
   try {
     const copy = JSON.parse(JSON.stringify(D)), slots = [];
@@ -246,7 +262,7 @@ async function publish(){
     for (let i=0; i<slots.length; i++) {
       const [o,k,v] = slots[i];
       if (!done.has(v)) {
-        say(`ছবি আপলোড হচ্ছে ${i+1}/${slots.length}…`);
+        say(T(`ছবি আপলোড হচ্ছে ${i+1}/${slots.length}…`, `Uploading picture ${i+1}/${slots.length}…`));
         const ext = v.slice(11, v.indexOf(";")).replace("jpeg","jpg");
         const path = `assets/uploads/${Date.now().toString(36)}-${i}.${ext}`;
         await gh(`/contents/${path}`, {method:"PUT", body:JSON.stringify({message:"Upload portfolio image", content:v.split(",")[1], branch:auth.branch})});
@@ -254,15 +270,15 @@ async function publish(){
       }
       o[k] = done.get(v);
     }
-    say("সেভ হচ্ছে…");
+    say(T("সেভ হচ্ছে…", "Saving…"));
     const res = await gh(`/contents/data.json`, {method:"PUT", body:JSON.stringify({message:"Update portfolio content", content:toB64(JSON.stringify(copy,null,2)+"\n"), sha, branch:auth.branch})});
     sha = res.content.sha;
     /* keep local previews working while GitHub Pages rebuilds */
-    dirty = false; say(`পাবলিশ হয়েছে। সাইটে প্রজেক্ট আছে ${copy.projects.length}টি। ১–২ মিনিট পরে সাইট রিফ্রেশ করুন।`,"good");
+    dirty = false; say(T(`পাবলিশ হয়েছে। সাইটে প্রজেক্ট আছে ${copy.projects.length}টি। ১–২ মিনিট পরে সাইট রিফ্রেশ করুন।`, `Published. Projects on the site: ${copy.projects.length}. Refresh the site in 1–2 minutes.`),"good");
     previews = new Map([...previews, ...[...done].map(([data,path]) => [path,data])]);
     D = copy; loaded = JSON.stringify(D); lastPublish = new Date().toISOString(); render();
   } catch (err) {
-    say(err.status === 409 ? "অন্য জায়গা থেকে data.json বদলেছে। “data.json ডাউনলোড” দিয়ে ব্যাকআপ রেখে পেজ রিলোড করুন।" : err.message || "পাবলিশ হয়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।","bad");
+    say(err.status === 409 ? T("অন্য জায়গা থেকে data.json বদলেছে। “data.json ডাউনলোড” দিয়ে ব্যাকআপ রেখে পেজ রিলোড করুন।", "data.json was changed somewhere else. Use “Download data.json” to keep a backup, then reload the page.") : err.message || T("পাবলিশ হয়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।", "Not published. Check your internet and try again."),"bad");
   } finally { busy = false; $("#publish").disabled = false; }
 }
 $("#publish").onclick = publish;
@@ -270,7 +286,7 @@ $("#download").onclick = () => {
   const a = el("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:"application/json"})); a.download = "data.json";
   document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   if (!auth) dirty = false;
-  say("data.json ডাউনলোড হয়েছে।","good");
+  say(T("data.json ডাউনলোড হয়েছে।", "data.json downloaded."),"good");
 };
 
 /* ---------- form helpers ---------- */
@@ -298,9 +314,9 @@ function resize(file, max){
 function picture(label, obj, key){
   const box = el("div","row"), l = el("label","",label), i = el("input"); i.type = "file"; i.accept = "image/*";
   const view = el("img"); view.alt = ""; view.style.cssText = "max-width:220px;max-height:150px;border-radius:10px";
-  const clear = btn("ছবি সরাও", () => { obj[key] = ""; paint(); changed(); }, "small danger");
+  const clear = btn(T("ছবি সরাও", "Remove picture"), () => { obj[key] = ""; paint(); changed(); }, "small danger");
   const paint = () => { view.hidden = clear.hidden = !obj[key]; if (obj[key]) view.src = pic(obj[key]); };
-  i.onchange = async () => { if (!i.files[0]) return; try { obj[key] = await resize(i.files[0], 1600); paint(); changed(); } catch (e) { say("ছবিটা পড়া যায়নি। JPG বা PNG দিন।","bad"); } };
+  i.onchange = async () => { if (!i.files[0]) return; try { obj[key] = await resize(i.files[0], 1600); paint(); changed(); } catch (e) { say(T("ছবিটা পড়া যায়নি। JPG বা PNG দিন।", "Could not read that picture. Use a JPG or PNG."),"bad"); } };
   clear.style.justifySelf = "start"; l.append(i); box.append(l, view, clear); paint(); return box;
 }
 function move(arr, i, by){ const j = i+by; if (j<0 || j>=arr.length) return; [arr[i],arr[j]] = [arr[j],arr[i]]; changed(); render(); }
@@ -310,7 +326,7 @@ function rows(title, key, fields, addText, note){
   arr.forEach((item,i) => {
     const r = el("div","row");
     fields.forEach(([k,label,opt]) => r.append(field(label, item[k], v => { item[k] = v; changed(); }, opt)));
-    const a = el("div","acts"); a.append(btn("↑", () => move(arr,i,-1)), btn("↓", () => move(arr,i,1)), btn("মুছো", () => { arr.splice(i,1); changed(); render(); }, "small danger"));
+    const a = el("div","acts"); a.append(btn("↑", () => move(arr,i,-1)), btn("↓", () => move(arr,i,1)), btn(T("মুছো","Delete"), () => { arr.splice(i,1); changed(); render(); }, "small danger"));
     r.append(a); b.append(r);
   });
   const add = btn(addText, () => { arr.push(Object.fromEntries(fields.map(f => [f[0],""]))); changed(); render(); }); add.style.justifySelf = "start"; b.append(add); return b;
@@ -328,8 +344,8 @@ function commitDraft(){
   const p = editing.p;
   p.title = (p.title || "").trim(); p.video = (p.video || "").trim();
   if (/^[\w-]+(\.[\w-]+)+\/\S*$/.test(p.video)) p.video = "https://" + p.video; /* link pasted without https:// */
-  const missing = [!p.title && "প্রজেক্টের নাম", !p.type && "ধরন", !/^https?:\/\/\S+$/i.test(p.video) && "সঠিক ভিডিও লিংক"].filter(Boolean);
-  if (missing.length) { say(`প্রজেক্টটা যোগ হয়নি। বাকি আছে: ${missing.join(", ")}।`,"bad"); return false; }
+  const missing = [!p.title && T("প্রজেক্টের নাম","project name"), !p.type && T("ধরন","type"), !/^https?:\/\/\S+$/i.test(p.video) && T("সঠিক ভিডিও লিংক","a valid video link")].filter(Boolean);
+  if (missing.length) { say(T(`প্রজেক্টটা যোগ হয়নি। বাকি আছে: ${missing.join(", ")}।`, `The project was not added. Still needed: ${missing.join(", ")}.`),"bad"); return false; }
   if (editing.index == null) D.projects.unshift(p); else D.projects[editing.index] = p;
   return true;
 }
@@ -337,29 +353,29 @@ function projects(panel){
   const isNew = !editing || editing.index == null;
   if (!editing) editing = {index:null, p:{title:"",type:D.types[0]?.name || "",shape:"wide",video:"",image:"",client:"",role:"",about:""}};
   const p = editing.p, f = el("form","box");
-  f.append(el("h2","",isNew ? "নতুন প্রজেক্ট যোগ করুন" : "প্রজেক্ট সম্পাদনা"));
+  f.append(el("h2","",isNew ? T("নতুন প্রজেক্ট যোগ করুন","Add a new project") : T("প্রজেক্ট সম্পাদনা","Edit project")));
   f.addEventListener("input", () => { dirty = true; $("#publish").classList.add("pending"); });
   const a = el("div","two");
-  a.append(field("প্রজেক্টের নাম *", p.title, v => p.title = v), field("ধরন *", p.type, v => p.type = v, {options:D.types.map(t => [t.name,t.name])}));
+  a.append(field(T("প্রজেক্টের নাম *","Project name *"), p.title, v => p.title = v), field(T("ধরন *","Type *"), p.type, v => p.type = v, {options:D.types.map(t => [t.name,t.name])}));
   const b = el("div","two");
-  b.append(field("ভিডিও লিংক *", p.video, v => p.video = v, {type:"url",hint:"YouTube, Vimeo, Drive, Facebook বা Instagram লিংক"}), field("ভিডিওর আকার", p.shape, v => p.shape = v, {options:[["wide","আড়াআড়ি (16:9)"],["vertical","লম্বা (Reels / Shorts)"]]}));
+  b.append(field(T("ভিডিও লিংক *","Video link *"), p.video, v => p.video = v, {type:"url",hint:T("YouTube, Vimeo, Drive, Facebook বা Instagram লিংক","YouTube, Vimeo, Drive, Facebook or Instagram link")}), field(T("ভিডিওর আকার","Video shape"), p.shape, v => p.shape = v, {options:[["wide",T("আড়াআড়ি (16:9)","Landscape (16:9)")],["vertical",T("লম্বা (Reels / Shorts)","Vertical (Reels / Shorts)")]]}));
   const c = el("div","two");
-  c.append(field("ক্লায়েন্ট", p.client, v => p.client = v), field("আপনার ভূমিকা", p.role, v => p.role = v, {hint:"Edit, motion, color"}));
-  f.append(a, b, el("p","muted","ভালো কোয়ালিটির জন্য YouTube (Unlisted) লিংক দিন। ড্রাইভের ভিডিও কম কোয়ালিটিতে চলতে পারে।"), c, field("ছোট বর্ণনা", p.about, v => p.about = v, {area:true}), picture("থাম্বনেইল (না দিলে YouTube থেকে আসবে)", p, "image"));
+  c.append(field(T("ক্লায়েন্ট","Client"), p.client, v => p.client = v), field(T("আপনার ভূমিকা","Your role"), p.role, v => p.role = v, {hint:"Edit, motion, color"}));
+  f.append(a, b, el("p","muted",T("ভালো কোয়ালিটির জন্য YouTube (Unlisted) লিংক দিন। ড্রাইভের ভিডিও কম কোয়ালিটিতে চলতে পারে।","For good quality use a YouTube (Unlisted) link. Drive videos may play in low quality.")), c, field(T("ছোট বর্ণনা","Short description"), p.about, v => p.about = v, {area:true}), picture(T("থাম্বনেইল (না দিলে YouTube থেকে আসবে)","Thumbnail (taken from YouTube if left empty)"), p, "image"));
   const acts = el("div","acts"); acts.style.justifyContent = "flex-start";
-  const save = el("button","hot",isNew ? "তালিকায় যোগ করো" : "পরিবর্তন রাখো"); save.type = "submit"; acts.append(save);
-  if (!isNew) acts.append(btn("বাতিল", () => { editing = null; render(); }, ""));
+  const save = el("button","hot",isNew ? T("তালিকায় যোগ করো","Add to list") : T("পরিবর্তন রাখো","Keep changes")); save.type = "submit"; acts.append(save);
+  if (!isNew) acts.append(btn(T("বাতিল","Cancel"), () => { editing = null; render(); }, ""));
   f.append(acts);
   f.onsubmit = e => { e.preventDefault(); if (commitDraft()) { editing = null; changed(); render(); } };
   panel.append(f);
-  const l = box(`আপনার প্রজেক্ট (${D.projects.length})`, D.projects.length ? "উপরের প্রজেক্ট সাইটে আগে দেখাবে।" : "এখনো কোনো প্রজেক্ট নেই। উপরের ফর্ম থেকে প্রথমটা যোগ করুন।");
+  const l = box(T(`আপনার প্রজেক্ট (${D.projects.length})`,`Your projects (${D.projects.length})`), D.projects.length ? T("উপরের প্রজেক্ট সাইটে আগে দেখাবে।","Projects at the top show first on the site.") : T("এখনো কোনো প্রজেক্ট নেই। উপরের ফর্ম থেকে প্রথমটা যোগ করুন।","No projects yet. Add the first one with the form above."));
   D.projects.forEach((x,i) => {
     const r = el("div","item"), im = el("img"); im.alt = ""; const source = pic(x.image) || ytThumb(x.video); if (source) im.src = source;
-    const t = el("div"); t.append(el("b","",x.title), el("span","muted",`${x.type} · ${x.shape === "vertical" ? "লম্বা" : "আড়াআড়ি"}`));
+    const t = el("div"); t.append(el("b","",x.title), el("span","muted",`${x.type} · ${x.shape === "vertical" ? T("লম্বা","Vertical") : T("আড়াআড়ি","Landscape")}`));
     const acts = el("div","acts");
     acts.append(btn("↑", () => { if (editing.index != null) editing = null; move(D.projects,i,-1); }), btn("↓", () => { if (editing.index != null) editing = null; move(D.projects,i,1); }),
-      btn("সম্পাদনা", () => { editing = {index:i, p:{...x}}; render(); scrollTo(0,0); }),
-      btn("মুছো", e => { const k = e.currentTarget; if (k.dataset.sure) { D.projects.splice(i,1); if (editing.index != null) editing = null; changed(); render(); } else { k.dataset.sure = "1"; k.textContent = "নিশ্চিত?"; } }, "small danger"));
+      btn(T("সম্পাদনা","Edit"), () => { editing = {index:i, p:{...x}}; render(); scrollTo(0,0); }),
+      btn(T("মুছো","Delete"), e => { const k = e.currentTarget; if (k.dataset.sure) { D.projects.splice(i,1); if (editing.index != null) editing = null; changed(); render(); } else { k.dataset.sure = "1"; k.textContent = T("নিশ্চিত?","Sure?"); } }, "small danger"));
     r.append(im,t,acts); l.append(r);
   });
   panel.append(l);
@@ -372,66 +388,91 @@ function inputs(b, obj, list){
   return b;
 }
 function pair(obj, list){ return inputs(el("div","two"), obj, list); }
-const SHOW = {color:"Color grade সেকশন", services:"Services সেকশন", process:"Process সেকশন", portrait:"Contact অংশের ডান পাশে ছবির বক্স", stats:"About অংশের অভিজ্ঞতার বক্স (Years of experience)"};
-function switcher(key, note){ const b = box("সাইটে দেখানো", note); b.append(toggle(key, SHOW[key] + " দেখাও")); return b; }
+const SHOW = {
+  start:["“Get Started” বাটন ও অংশ","“Get Started” button and section"],
+  color:["Color grade সেকশন","Color grade section"],
+  services:["Services সেকশন","Services section"],
+  process:["Process সেকশন","Process section"],
+  portrait:["Contact অংশের ডান পাশে ছবির বক্স","Photo box on the right of Contact"],
+  stats:["About অংশের অভিজ্ঞতার বক্স (Years of experience)","Years of experience box in About"]
+};
+const showText = key => T(`${SHOW[key][0]} দেখাও`, `Show: ${SHOW[key][1]}`);
+function switcher(key, note){ const b = box(T("সাইটে দেখানো","Show on site"), note); b.append(toggle(key, showText(key))); return b; }
 
 function homePage(panel){
-  const P = D.profile, a = box("নাম ও পদবি","হোমের উপরের অংশে যা দেখায়।");
-  a.append(pair(P, [["greeting","শুরুর সম্ভাষণ (যেমন Hi, I'm)"],["name","নাম"]]), pair(P, [["roleTop","পদবি, ছোট শব্দ"],["roleMid","পদবি, রঙিন লাইন"]]),
-    pair(P, [["roleMain","পদবি, শেষ লাইন"],["role","পদবি (ব্রাউজার ট্যাবে দেখায়)"]]));
-  const b = inputs(box("পরিচিতি লেখা ও ভিডিও"), P, [["tagline","পরিচিতি লেখা",{area:true}],["showreel","শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)",{type:"url"}]]);
-  b.append(pair(P, [["line1","স্লোগান, প্রথম লাইন (ফাঁকা রাখলে দেখাবে না)"],["line2","স্লোগান, দ্বিতীয় লাইন"]]));
-  const c = box("হোমের ছবি","নাম ও পদবির মাঝখানে বসবে। ব্যাকগ্রাউন্ড কাটা PNG সবচেয়ে ভালো।"); c.append(picture("ছবি বেছে নিন", P, "heroImage"));
+  const P = D.profile, a = box(T("নাম ও পদবি","Name and title"), T("হোমের উপরের অংশে যা দেখায়।","What shows at the top of the home page."));
+  a.append(pair(P, [["greeting",T("শুরুর সম্ভাষণ (যেমন Hi, I'm)","Greeting (for example Hi, I'm)")],["name",T("নাম","Name")]]), pair(P, [["roleTop",T("পদবি, ছোট শব্দ","Title, small word")],["roleMid",T("পদবি, রঙিন লাইন","Title, highlighted line")]]),
+    pair(P, [["roleMain",T("পদবি, শেষ লাইন","Title, last line")],["role",T("পদবি (ব্রাউজার ট্যাবে দেখায়)","Title (shown on the browser tab)")]]));
+  const b = inputs(box(T("পরিচিতি লেখা ও ভিডিও","Intro text and video")), P, [["tagline",T("পরিচিতি লেখা","Intro text"),{area:true}],["showreel",T("শোরিল ভিডিও লিংক (দিলে বাটন দেখাবে)","Showreel video link (adds a button)"),{type:"url"}]]);
+  b.append(pair(P, [["line1",T("স্লোগান, প্রথম লাইন (ফাঁকা রাখলে দেখাবে না)","Slogan, first line (hidden if empty)")],["line2",T("স্লোগান, দ্বিতীয় লাইন","Slogan, second line")]]));
+  const c = box(T("হোমের ছবি","Home picture"), T("নাম ও পদবির মাঝখানে বসবে। ব্যাকগ্রাউন্ড কাটা PNG সবচেয়ে ভালো।","Sits between your name and title. A PNG with the background removed works best.")); c.append(picture(T("ছবি বেছে নিন","Choose a picture"), P, "heroImage"));
   panel.append(a, b, c);
 }
 function aboutPage(panel){
-  panel.append(inputs(box("নিজের সম্পর্কে"), D.profile, [["statement","বড় উক্তি",{area:true}],["bio","বিস্তারিত লেখা",{area:true}]]),
+  panel.append(inputs(box(T("নিজের সম্পর্কে","About you")), D.profile, [["statement",T("বড় উক্তি","Large quote"),{area:true}],["bio",T("বিস্তারিত লেখা","Full text"),{area:true}]]),
     switcher("stats"),
-    rows("পরিসংখ্যান","stats",[["value","সংখ্যা"],["label","কিসের"]],"+ সংখ্যা"),
-    rows("সফটওয়্যার","tools",[["name","নাম"],["use","কী কাজে"]],"+ সফটওয়্যার"),
-    rows("অভিজ্ঞতা","experience",[["years","সময়"],["title","পদ বা কোর্স"],["place","প্রতিষ্ঠান"]],"+ অভিজ্ঞতা"));
+    rows(T("পরিসংখ্যান","Numbers"),"stats",[["value",T("সংখ্যা","Number")],["label",T("কিসের","Of what")]],T("+ সংখ্যা","+ Number")),
+    rows(T("সফটওয়্যার","Software"),"tools",[["name",T("নাম","Name")],["use",T("কী কাজে","Used for")]],T("+ সফটওয়্যার","+ Software")),
+    rows(T("অভিজ্ঞতা","Experience"),"experience",[["years",T("সময়","Period")],["title",T("পদ বা কোর্স","Role or course")],["place",T("প্রতিষ্ঠান","Organisation")]],T("+ অভিজ্ঞতা","+ Experience")));
+}
+function startPage(panel){
+  const S = D.start;
+  const links = inputs(box(T("মিটিং ও ফর্মের লিংক","Meeting and form links"), T("লিংক দিলে সাইটের “Get Started” পপ-আপে সেই বাটন আসবে। ফাঁকা থাকলেও ভিজিটর হোয়াটসঅ্যাপ বা ইমেইলে মেসেজ ও মিটিংয়ের অনুরোধ পাঠাতে পারবে।","A link adds its button to the “Get Started” pop-up on your site. Even when empty, visitors can send a message or a meeting request by WhatsApp or email.")), S, [
+    ["meeting",T("মিটিং বুকিং লিংক (Calendly বা Google Calendar)","Meeting booking link (Calendly or Google Calendar)"),{type:"url",hint:"https://calendly.com/your-name/30min"}],
+    ["form",T("প্রজেক্ট ফর্ম লিংক (ঐচ্ছিক, Google Form)","Project form link (optional, Google Form)"),{type:"url",hint:"https://forms.gle/..."}]]);
+  const help = box(T("Calendly লিংক বানানোর ধাপ","How to get a Calendly link")), ol = el("ol","steps");
+  [T("calendly.com-এ গিয়ে আপনার Google অ্যাকাউন্ট দিয়ে ফ্রি অ্যাকাউন্ট খুলুন।","Go to calendly.com and open a free account with your Google account."),
+   T("Google Calendar কানেক্ট করুন।","Connect your Google Calendar."),
+   T("30 Minute Meeting ইভেন্টে Location হিসেবে Google Meet দিন এবং কোন দিন, কোন সময় ফ্রি থাকবেন তা ঠিক করুন।","In the 30 Minute Meeting event, set Google Meet as the location and choose the days and hours you are free."),
+   T("Copy link চেপে লিংকটা উপরের ঘরে বসান, তারপর “পাবলিশ করো” চাপুন।","Press Copy link, paste it in the box above, then press “Publish”.")].forEach(x => ol.append(el("li","",x)));
+  help.append(ol);
+  const text = inputs(box(T("“Get Started” অংশের লেখা","Text of the “Get Started” section"), T("সাইট ইংরেজিতে, তাই লেখা ইংরেজিতে দিন। ফাঁকা রাখলে উদাহরণের লেখাটাই দেখাবে।","Leave a box empty to use the sample text shown in it.")), S, [
+    ["title",T("শিরোনাম","Heading"),{hint:"Have a video in mind?"}],
+    ["text",T("ছোট লেখা","Short text"),{area:true,hint:"Tell me what you're making. Send a message or set up a meeting, whichever suits you."}],
+    ["button",T("বাটনের লেখা","Button text"),{hint:"Get Started Now"}]]);
+  panel.append(switcher("start"), links, help, text);
 }
 function contactPage(panel){
-  const P = D.profile, a = inputs(box("যোগাযোগের লেখা"), P, [["contactTitle","শিরোনাম",{area:true}],["contactText","লেখা",{area:true}],["email","ইমেইল",{type:"email"}]]);
-  const c = box("ছবি"); c.append(toggle("portrait", SHOW.portrait + " দেখাও"), picture("আপনার ছবি (লম্বা, 4:5 হলে ভালো)", P, "photo"), inputs(el("div","two"), P, [["initials","ছবি না থাকলে যে অক্ষর দেখাবে"]]));
-  panel.append(a, rows("সোশ্যাল লিংক","socials",[["label","নাম (যেমন YouTube)"],["text","যে লেখা দেখাবে"],["url","লিংক"]],"+ লিংক যোগ করো"), c);
+  const P = D.profile, a = inputs(box(T("যোগাযোগের লেখা","Contact text")), P, [["contactTitle",T("শিরোনাম","Heading"),{area:true}],["contactText",T("লেখা","Text"),{area:true}],["email",T("ইমেইল","Email"),{type:"email"}]]);
+  const c = box(T("ছবি","Photo")); c.append(toggle("portrait", showText("portrait")), picture(T("আপনার ছবি (লম্বা, 4:5 হলে ভালো)","Your photo (tall, ideally 4:5)"), P, "photo"), inputs(el("div","two"), P, [["initials",T("ছবি না থাকলে যে অক্ষর দেখাবে","Letters shown when there is no photo")]]));
+  panel.append(a, rows(T("সোশ্যাল লিংক","Social links"),"socials",[["label",T("নাম (যেমন YouTube)","Name (for example YouTube)")],["text",T("যে লেখা দেখাবে","Text to show")],["url",T("লিংক","Link")]],T("+ লিংক যোগ করো","+ Add link")), c);
 }
-function servicesPage(panel){ panel.append(switcher("services"), rows("সার্ভিস","services",[["name","নাম"],["text","বর্ণনা",{area:true}]],"+ সার্ভিস")); }
-function processPage(panel){ panel.append(switcher("process"), rows("প্রসেস","steps",[["name","ধাপ"],["text","বর্ণনা",{area:true}],["result","ক্লায়েন্ট যা পায়"]],"+ ধাপ")); }
+function servicesPage(panel){ panel.append(switcher("services"), rows(T("সার্ভিস","Services"),"services",[["name",T("নাম","Name")],["text",T("বর্ণনা","Description"),{area:true}]],T("+ সার্ভিস","+ Service"))); }
+function processPage(panel){ panel.append(switcher("process"), rows(T("প্রসেস","Process"),"steps",[["name",T("ধাপ","Step")],["text",T("বর্ণনা","Description"),{area:true}],["result",T("ক্লায়েন্ট যা পায়","What the client gets")]],T("+ ধাপ","+ Step"))); }
 function colorPage(panel){
-  const g = box("কালার গ্রেডিং ফ্রেম","একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে এই সেকশন সাইটে দেখাবে না।");
-  g.append(picture("আগে (flat)", D.grade, "before"), picture("পরে (graded)", D.grade, "after"));
+  const g = box(T("কালার গ্রেডিং ফ্রেম","Color grading frames"), T("একই ফ্রেমের আগে ও পরের দুটো ছবি দিন। না দিলে এই সেকশন সাইটে দেখাবে না।","Add before and after pictures of the same frame. Without them this section stays hidden."));
+  g.append(picture(T("আগে (flat)","Before (flat)"), D.grade, "before"), picture(T("পরে (graded)","After (graded)"), D.grade, "after"));
   panel.append(switcher("color"), g);
 }
-function feedbackPage(panel){ panel.append(rows("ক্লায়েন্ট ফিডব্যাক","quotes",[["text","ক্লায়েন্টের কথা",{area:true}],["who","নাম ও পরিচয়"]],"+ ফিডব্যাক","শুধু আসল ক্লায়েন্টের কথা দিন। কিছু না থাকলে সেকশনটা সাইটে দেখায় না।")); }
+function feedbackPage(panel){ panel.append(rows(T("ক্লায়েন্ট ফিডব্যাক","Client feedback"),"quotes",[["text",T("ক্লায়েন্টের কথা","What the client said"),{area:true}],["who",T("নাম ও পরিচয়","Name and role")]],T("+ ফিডব্যাক","+ Feedback"),T("শুধু আসল ক্লায়েন্টের কথা দিন। কিছু না থাকলে সেকশনটা সাইটে দেখায় না।","Add only real words from clients. The section stays hidden while empty."))); }
 function visibilityPage(panel){
-  const v = box("কোন অংশ সাইটে দেখাবে","টিক তুলে দিলে সেই অংশ লুকানো থাকবে। তারপর পাবলিশ করুন।");
-  Object.keys(SHOW).forEach(k => v.append(toggle(k, SHOW[k])));
+  const v = box(T("কোন অংশ সাইটে দেখাবে","What shows on the site"), T("টিক তুলে দিলে সেই অংশ লুকানো থাকবে। তারপর পাবলিশ করুন।","Untick a part to hide it, then publish."));
+  Object.keys(SHOW).forEach(k => v.append(toggle(k, T(...SHOW[k]))));
   panel.append(v);
 }
 
 function types(panel){
-  const b = box("কাজের ধরন","এখানে যোগ করা ধরন প্রজেক্ট ফর্মের তালিকায় আসবে। ব্যবহৃত ধরন মুছতে হলে আগে সেই প্রজেক্টগুলোর ধরন বদলান।");
+  const b = box(T("কাজের ধরন","Work types"), T("এখানে যোগ করা ধরন প্রজেক্ট ফর্মের তালিকায় আসবে। ব্যবহৃত ধরন মুছতে হলে আগে সেই প্রজেক্টগুলোর ধরন বদলান।","Types added here appear in the project form. To delete a type that is in use, change the type of those projects first."));
   D.types.forEach((t,i) => {
-    const used = D.projects.filter(p => p.type === t.name).length, r = el("div","row"), name = field(`ধরনের নাম (প্রজেক্ট ${used}টি)`, t.name, () => {});
+    const used = D.projects.filter(p => p.type === t.name).length, r = el("div","row"), name = field(T(`ধরনের নাম (প্রজেক্ট ${used}টি)`, `Type name (projects: ${used})`), t.name, () => {});
     name.querySelector("input").onchange = e => {
       const v = e.target.value.trim();
-      if (!v || D.types.some(o => o !== t && o.name === v)) { e.target.value = t.name; return say("নাম ফাঁকা বা একই নাম দুইবার হতে পারবে না।","bad"); }
+      if (!v || D.types.some(o => o !== t && o.name === v)) { e.target.value = t.name; return say(T("নাম ফাঁকা বা একই নাম দুইবার হতে পারবে না।","A name cannot be empty or used twice."),"bad"); }
       D.projects.forEach(p => { if (p.type === t.name) p.type = v; }); if (editing && editing.p.type === t.name) editing.p.type = v; t.name = v; changed();
     };
-    const a = el("div","acts"); a.append(btn("↑", () => move(D.types,i,-1)), btn("↓", () => move(D.types,i,1)), btn("মুছো", () => {
-      if (D.projects.some(p => p.type === t.name)) return say("এই ধরনে প্রজেক্ট আছে, তাই মোছা যাবে না।","bad");
+    const a = el("div","acts"); a.append(btn("↑", () => move(D.types,i,-1)), btn("↓", () => move(D.types,i,1)), btn(T("মুছো","Delete"), () => {
+      if (D.projects.some(p => p.type === t.name)) return say(T("এই ধরনে প্রজেক্ট আছে, তাই মোছা যাবে না।","This type has projects, so it cannot be deleted."),"bad");
       D.types.splice(i,1); if (editing && editing.p.type === t.name) editing.p.type = D.types[0]?.name || ""; changed(); render(); }, "small danger"));
     r.append(name, a); b.append(r);
   });
-  const add = btn("+ নতুন ধরন", () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
+  const add = btn(T("+ নতুন ধরন","+ New type"), () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
 }
 /* ---------- dashboard ---------- */
 function dashboard(panel){
   const P = D.projects, w = el("section","welcome"), t = el("div"), acts = el("div","acts");
-  t.append(el("h2","",`স্বাগতম, ${D.profile.name || ""}`), el("p","", dirty ? "কিছু পরিবর্তন এখনো পাবলিশ করা হয়নি।" : "এখান থেকে পুরো পোর্টফোলিও নিয়ন্ত্রণ করুন।"));
-  const add = btn("নতুন প্রজেক্ট", () => { if (!draftPending()) editing = null; go("projects"); $("#panel form input")?.focus(); }, ""); add.prepend(ic("plus"));
-  const see = el("a","button ghost"); see.href = "./"; see.target = "_blank"; see.rel = "noopener"; see.append(ic("site"), "সাইট দেখুন");
+  t.append(el("h2","",T(`স্বাগতম, ${D.profile.name || ""}`, `Welcome, ${D.profile.name || ""}`)), el("p","", dirty ? T("কিছু পরিবর্তন এখনো পাবলিশ করা হয়নি।","Some changes are not published yet.") : T("এখান থেকে পুরো পোর্টফোলিও নিয়ন্ত্রণ করুন।","Control your whole portfolio from here.")));
+  const add = btn(T("নতুন প্রজেক্ট","New project"), () => { if (!draftPending()) editing = null; go("projects"); $("#panel form input")?.focus(); }, ""); add.prepend(ic("plus"));
+  const see = el("a","button ghost"); see.href = "./"; see.target = "_blank"; see.rel = "noopener"; see.append(ic("site"), T("সাইট দেখুন","View site"));
   acts.append(add, see); w.append(t, acts);
 
   const kpis = el("div","kpis");
@@ -439,65 +480,85 @@ function dashboard(panel){
   const usedTypes = D.types.filter(t => P.some(p => p.type === t.name)).length;
   const links = D.socials.filter(s => s.url || s.text).length + (D.profile.email ? 1 : 0);
   const hidden = Object.keys(SHOW).filter(k => D.show[k] === false).length;
-  const when = lastPublish ? new Date(lastPublish).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}) : "জানা নেই";
-  kpi("মোট প্রজেক্ট", String(P.length), "projects", P.length ? `লম্বা ভিডিও ${P.filter(p => p.shape === "vertical").length}টি` : "এখনো কিছু যোগ হয়নি");
-  kpi("কাজ আছে এমন ধরন", `${usedTypes} / ${D.types.length}`, "types", "মোট ধরনের মধ্যে");
-  kpi("যোগাযোগের মাধ্যম", String(links), "link", hidden ? `${hidden}টি অংশ লুকানো` : "সব অংশ দেখানো হচ্ছে");
-  kpi("শেষ পাবলিশ", when, "clock", auth ? "data.json-এর শেষ পরিবর্তন" : "লগইন করলে দেখা যাবে", true);
+  const when = lastPublish ? new Date(lastPublish).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"}) : T("জানা নেই","Unknown");
+  const tall = P.filter(p => p.shape === "vertical").length;
+  kpi(T("মোট প্রজেক্ট","Total projects"), String(P.length), "projects", P.length ? T(`লম্বা ভিডিও ${tall}টি`, `Vertical videos: ${tall}`) : T("এখনো কিছু যোগ হয়নি","Nothing added yet"));
+  kpi(T("কাজ আছে এমন ধরন","Types with work"), `${usedTypes} / ${D.types.length}`, "types", T("মোট ধরনের মধ্যে","out of all types"));
+  kpi(T("যোগাযোগের মাধ্যম","Contact channels"), String(links), "link", hidden ? T(`${hidden}টি অংশ লুকানো`, `Hidden parts: ${hidden}`) : T("সব অংশ দেখানো হচ্ছে","All parts are shown"));
+  kpi(T("শেষ পাবলিশ","Last published"), when, "clock", auth ? T("data.json-এর শেষ পরিবর্তন","Last change to data.json") : T("লগইন করলে দেখা যাবে","Sign in to see this"), true);
 
-  const cols = el("div","cols"), byType = box("ধরন অনুযায়ী প্রজেক্ট"), bars = el("div","bars"), top = Math.max(1, ...D.types.map(t => P.filter(p => p.type === t.name).length));
+  const cols = el("div","cols"), byType = box(T("ধরন অনুযায়ী প্রজেক্ট","Projects by type")), bars = el("div","bars"), top = Math.max(1, ...D.types.map(t => P.filter(p => p.type === t.name).length));
   D.types.forEach(t => { const n = P.filter(p => p.type === t.name).length, r = el("div","barrow"), bar = el("i"); bar.style.setProperty("--w", `${n/top*100}%`); r.append(el("span","",t.name), bar, el("strong","",String(n))); bars.append(r); });
   byType.append(bars);
-  const recent = box("তালিকার প্রথম প্রজেক্টগুলো", P.length ? "সাইটে এই ক্রমে দেখায়।" : "এখনো কোনো প্রজেক্ট নেই।");
+  const recent = box(T("তালিকার প্রথম প্রজেক্টগুলো","First projects in the list"), P.length ? T("সাইটে এই ক্রমে দেখায়।","They show on the site in this order.") : T("এখনো কোনো প্রজেক্ট নেই।","No projects yet."));
   P.slice(0,4).forEach((x,i) => {
     const r = el("div","item"), source = pic(x.image) || ytThumb(x.video), im = el(source ? "img" : "div", source ? "" : "ph"); if (source) { im.src = source; im.alt = ""; }
     const info = el("div"); info.append(el("b","",x.title), el("span","muted",x.type));
-    const a = el("div","acts"); a.append(btn("সম্পাদনা", () => { if (draftPending()) { go("projects"); return say("ফর্মের অসম্পূর্ণ প্রজেক্টটা আগে রাখুন বা বাতিল করুন।","bad"); } editing = {index:i, p:{...x}}; go("projects"); }));
+    const a = el("div","acts"); a.append(btn(T("সম্পাদনা","Edit"), () => { if (draftPending()) { go("projects"); return say(T("ফর্মের অসম্পূর্ণ প্রজেক্টটা আগে রাখুন বা বাতিল করুন।","First keep or cancel the unfinished project in the form."),"bad"); } editing = {index:i, p:{...x}}; go("projects"); }));
     r.append(im, info, a); recent.append(r);
   });
   cols.append(byType, recent);
 
-  const tips = box("আরও ভালো করতে");
-  const tip = (text, key) => { const r = el("div","todo"); r.append(el("span","",text), btn("খুলুন", () => go(key))); tips.append(r); };
-  if (!P.length) tip("প্রথম প্রজেক্টটা যোগ করুন।","projects");
+  const tips = box(T("আরও ভালো করতে","To make it better"));
+  const tip = (text, key) => { const r = el("div","todo"); r.append(el("span","",text), btn(T("খুলুন","Open"), () => go(key))); tips.append(r); };
+  if (!P.length) tip(T("প্রথম প্রজেক্টটা যোগ করুন।","Add your first project."),"projects");
   const drive = P.filter(p => /drive\.google\.com/.test(p.video)).length;
-  if (drive) tip(`${drive}টি ভিডিও ড্রাইভ থেকে চলছে। YouTube (Unlisted) লিংক দিলে কোয়ালিটি ভালো হবে।`,"projects");
-  if (!D.profile.heroImage) tip("হোমে নিজের ছবি যোগ করুন।","home");
-  if (!D.profile.showreel) tip("শোরিল ভিডিওর লিংক দিন।","home");
-  if (tips.children.length === 1) tips.append(el("p","muted","সব ঠিক আছে।"));
+  if (drive) tip(T(`${drive}টি ভিডিও ড্রাইভ থেকে চলছে। YouTube (Unlisted) লিংক দিলে কোয়ালিটি ভালো হবে।`, `Videos playing from Drive: ${drive}. YouTube (Unlisted) links will look better.`),"projects");
+  if (!D.profile.heroImage) tip(T("হোমে নিজের ছবি যোগ করুন।","Add your picture to the home page."),"home");
+  if (!D.profile.showreel) tip(T("শোরিল ভিডিওর লিংক দিন।","Add your showreel video link."),"home");
+  if (D.show.start !== false && !(D.start.meeting || "").trim()) tip(T("মিটিং বুকিং লিংক যোগ করুন, যাতে ক্লায়েন্ট নিজেই সময় বেছে নিতে পারে।","Add a meeting booking link so clients can pick a time themselves."),"start");
+  if (tips.children.length === 1) tips.append(el("p","muted",T("সব ঠিক আছে।","All good.")));
   panel.append(w, kpis, cols, tips);
 }
 
 /* ---------- sidebar ---------- */
 const PAGES = [
-  {key:"dashboard",label:"ড্যাশবোর্ড",sub:"পোর্টফোলিওর এক নজরের অবস্থা",fn:dashboard},
-  {group:"কাজ",key:"projects",label:"প্রজেক্ট",sub:"ভিডিও যোগ, সম্পাদনা ও সাজানো",fn:projects},
-  {key:"types",label:"কাজের ধরন",sub:"Commercial, EdTech ইত্যাদি",fn:types},
-  {group:"ওয়েবসাইটের অংশ",key:"home",label:"হোম",sub:"নাম, পদবি, পরিচিতি ও ছবি",fn:homePage},
-  {key:"about",label:"About",sub:"নিজের সম্পর্কে, অভিজ্ঞতা ও সফটওয়্যার",fn:aboutPage},
-  {key:"services",label:"সার্ভিস",sub:"যে কাজগুলো করেন",fn:servicesPage},
-  {key:"process",label:"প্রসেস",sub:"কাজের ধাপ",fn:processPage},
-  {key:"color",label:"কালার গ্রেড",sub:"আগে ও পরের ফ্রেম",fn:colorPage},
-  {key:"feedback",label:"ফিডব্যাক",sub:"ক্লায়েন্টের কথা",fn:feedbackPage},
-  {key:"contact",label:"কন্ট্যাক্ট",sub:"ইমেইল, সোশ্যাল লিংক ও ছবি",fn:contactPage},
-  {group:"সেটিংস",key:"visibility",label:"দেখান / লুকান",sub:"কোন অংশ সাইটে থাকবে",fn:visibilityPage}
+  {key:"dashboard",label:["ড্যাশবোর্ড","Dashboard"],sub:["পোর্টফোলিওর এক নজরের অবস্থা","Your portfolio at a glance"],fn:dashboard},
+  {group:["কাজ","Work"],key:"projects",label:["প্রজেক্ট","Projects"],sub:["ভিডিও যোগ, সম্পাদনা ও সাজানো","Add, edit and arrange videos"],fn:projects},
+  {key:"types",label:["কাজের ধরন","Work types"],sub:["Commercial, EdTech ইত্যাদি","Commercial, EdTech and more"],fn:types},
+  {group:["ওয়েবসাইটের অংশ","Website sections"],key:"home",label:["হোম","Home"],sub:["নাম, পদবি, পরিচিতি ও ছবি","Name, title, intro and picture"],fn:homePage},
+  {key:"about",label:["About","About"],sub:["নিজের সম্পর্কে, অভিজ্ঞতা ও সফটওয়্যার","About you, experience and software"],fn:aboutPage},
+  {key:"services",label:["সার্ভিস","Services"],sub:["যে কাজগুলো করেন","The work you offer"],fn:servicesPage},
+  {key:"process",label:["প্রসেস","Process"],sub:["কাজের ধাপ","Your working steps"],fn:processPage},
+  {key:"color",label:["কালার গ্রেড","Color grade"],sub:["আগে ও পরের ফ্রেম","Before and after frames"],fn:colorPage},
+  {key:"feedback",label:["ফিডব্যাক","Feedback"],sub:["ক্লায়েন্টের কথা","Words from clients"],fn:feedbackPage},
+  {key:"start",label:["Get Started / মিটিং","Get Started"],sub:["মিটিং বুকিং ও সরাসরি যোগাযোগ","Meeting booking and direct contact"],fn:startPage},
+  {key:"contact",label:["কন্ট্যাক্ট","Contact"],sub:["ইমেইল, সোশ্যাল লিংক ও ছবি","Email, social links and photo"],fn:contactPage},
+  {group:["সেটিংস","Settings"],key:"visibility",label:["দেখান / লুকান","Show / hide"],sub:["কোন অংশ সাইটে থাকবে","Choose what stays on the site"],fn:visibilityPage}
 ];
 function drawer(open){ $("#app").classList.toggle("open", open); $("#menu").setAttribute("aria-expanded", open); }
 function go(key){ tab = key; drawer(false); render(); scrollTo(0,0); try { history.replaceState(null,"","#"+key); } catch (e) {} }
 function render(){
   const page = PAGES.find(p => p.key === tab) || PAGES[0];
   $("#tabs").replaceChildren(...PAGES.flatMap(p => {
-    const b = btn("", () => go(p.key), ""); b.append(ic(p.key), el("span","",p.label)); if (p.key === page.key) b.setAttribute("aria-current","page");
+    const b = btn("", () => go(p.key), ""); b.append(ic(p.key), el("span","",T(...p.label))); if (p.key === page.key) b.setAttribute("aria-current","page");
     if (p.key === "projects") b.append(el("span","count",String(D.projects.length)));
-    return p.group ? [el("div","group",p.group), b] : [b];
+    return p.group ? [el("div","group",T(...p.group)), b] : [b];
   }));
-  $("#title").textContent = page.label; $("#subtitle").textContent = page.sub; $("#mark").textContent = D.profile.initials || "MJ";
+  $("#title").textContent = T(...page.label); $("#subtitle").textContent = T(...page.sub);
+  $("#who").textContent = auth ? `${auth.owner}/${auth.repo}` : T("টোকেন ছাড়া মোড","Editing without a token"); $("#mark").textContent = D.profile.initials || "MJ";
   const panel = $("#panel"), y = scrollY; panel.replaceChildren(); page.fn(panel); scrollTo(0,y);
 }
 $("#menu").append(ic("menu")); $("#view").prepend(ic("site")); $("#logout").prepend(ic("logout")); $("#publish").prepend(ic("publish"));
 $("#menu").onclick = () => drawer(!$("#app").classList.contains("open"));
 $("#shade").onclick = () => drawer(false);
 addEventListener("keydown", e => { if (e.key === "Escape") drawer(false); });
+
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
+  $("#tabs").setAttribute("aria-label", T("অ্যাডমিন মেনু","Admin menu"));
+  $("#menu").setAttribute("aria-label", T("মেনু খুলুন","Open menu"));
+}
+document.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => {
+  if (b.dataset.lang === lang) return;
+  lang = b.dataset.lang;
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  applyLang();
+  if (!$("#status .l-bn")) $("#status").textContent = ""; /* an older message would stay in the other language */
+  if (D) render();
+});
+applyLang();
 
 let saved = null;
 try { saved = JSON.parse(sessionStorage.getItem(KEY) || localStorage.getItem(KEY)); } catch (e) {}

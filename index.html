@@ -177,6 +177,34 @@ dialog::backdrop{background:rgba(3,18,17,.9)}
 #contact{background:var(--bordo);--muted:#e3ccb6;--line:rgba(245,218,191,.24)}
 #contact .frame::after{background:var(--green)}
 
+/* get started */
+.btn.glowing{box-shadow:0 0 30px -4px rgba(168,46,62,.95),inset 0 1px 0 rgba(245,218,191,.15)}
+.cta{display:grid;justify-items:center;gap:20px;text-align:center;padding:clamp(48px,7vw,92px) clamp(20px,5vw,56px);border:1px solid var(--line);border-radius:26px;background:radial-gradient(75% 90% at 50% 100%,rgba(140,36,49,.6),transparent 70%),var(--green-deep)}
+.cta h2{max-width:17ch}
+.cta p{max-width:50ch;color:var(--muted);white-space:pre-line}
+.cta .btn{margin-top:6px}
+#startDlg{width:min(560px,calc(100% - 28px))}
+#startDlg h3{font-size:1.9rem;padding-right:44px}
+.choices{display:grid;gap:12px}
+.choice{display:flex;align-items:center;gap:14px;padding:15px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bordo)}
+.choice:hover{border-color:var(--cream);background:var(--bordo-hi)}
+.choice b{display:block;font-weight:600;line-height:1.3}
+.choice small{display:block;color:var(--muted);font-size:.88rem}
+.choice>i{margin-left:auto;font-style:normal;font-size:1.2rem}
+#msgForm{display:grid;gap:14px}
+.choices:not(:empty)+#msgForm{border-top:1px solid var(--line);padding-top:16px}
+#msgForm>b{font-weight:600;font-size:1.15rem}
+#msgForm label{display:grid;gap:6px;min-width:0;font-size:.88rem;color:var(--accent)}
+#msgForm input,#msgForm select,#msgForm textarea{width:100%;min-width:0;font:400 1rem/1.5 var(--font);color:var(--white);background:rgba(4,24,23,.7);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color-scheme:dark}
+#msgForm textarea{resize:vertical;min-height:96px}
+#msgForm .tick{display:flex;align-items:center;gap:10px;color:var(--text);font-size:.98rem;cursor:pointer}
+#msgForm .tick input{width:19px;height:19px;flex:none;accent-color:var(--bordo-hi)}
+.when{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:420px){.when{grid-template-columns:minmax(0,1fr)}}
+#msgForm .actions{justify-content:flex-start}
+#msgForm .actions .btn{flex:1 1 200px;padding-inline:20px;cursor:pointer}
+.hint{font-size:.86rem;color:var(--muted)}
+
 /* motion */
 #progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,var(--bordo),var(--accent))}
 .glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px;border-radius:50%;background:radial-gradient(closest-side,rgba(140,36,49,.42),transparent);pointer-events:none;z-index:-1;opacity:0;transition:opacity .4s}
@@ -212,7 +240,7 @@ dialog .ring-c{display:none}
     <div class="copy">
       <h1><span data-t="line1"></span> <span data-t="line2"></span></h1>
       <p data-t="tagline"></p>
-      <div class="actions"><a class="btn" id="explore" href="#work"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M200 48l112 0c4.4 0 8 3.6 8 8l0 40-128 0 0-40c0-4.4 3.6-8 8-8zm-56 8l0 40-80 0C28.7 96 0 124.7 0 160l0 96 512 0 0-96c0-35.3-28.7-64-64-64l-80 0 0-40c0-30.9-25.1-56-56-56L200 0c-30.9 0-56 25.1-56 56zM512 304l-192 0 0 16c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-16-192 0 0 112c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-112z"/></svg>View Projects</a><button class="btn" id="playReel" type="button" hidden><i class="tri"></i>Play showreel</button></div>
+      <div class="actions"><a class="btn" id="explore" href="#work"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M200 48l112 0c4.4 0 8 3.6 8 8l0 40-128 0 0-40c0-4.4 3.6-8 8-8zm-56 8l0 40-80 0C28.7 96 0 124.7 0 160l0 96 512 0 0-96c0-35.3-28.7-64-64-64l-80 0 0-40c0-30.9-25.1-56-56-56L200 0c-30.9 0-56 25.1-56 56zM512 304l-192 0 0 16c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-16-192 0 0 112c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-112z"/></svg>View Projects</a><button class="btn hot glowing" id="heroStart" type="button" hidden>Get Started <span aria-hidden="true">↗</span></button><button class="btn" id="playReel" type="button" hidden><i class="tri"></i>Play showreel</button></div>
     </div>
   </div>
 </header>
@@ -256,6 +284,14 @@ dialog .ring-c{display:none}
     <div class="quotes" id="quotes"></div>
   </section>
 
+  <section id="start" class="wrap" hidden>
+    <div class="cta">
+      <h2 id="ctaTitle"></h2>
+      <p id="ctaText"></p>
+      <button class="btn hot glowing" id="ctaStart" type="button"><span id="ctaLabel"></span><span aria-hidden="true">↗</span></button>
+    </div>
+  </section>
+
   <section id="contact">
     <svg class="swirl" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0 250C90 262 190 240 215 175C238 112 190 70 150 100C110 132 140 215 270 248C470 298 760 205 900 130S1110 40 1200 30"/></svg>
     <div class="ring" aria-hidden="true"></div>
@@ -273,6 +309,23 @@ dialog .ring-c{display:none}
 </main>
 
 <dialog id="dlg" aria-label="Video player"><button type="button" class="close" id="close" aria-label="Close">×</button><div class="media" id="media"></div><div class="dbody" id="dbody"></div></dialog>
+
+<dialog id="startDlg" aria-labelledby="startHead"><button type="button" class="close" id="startClose" aria-label="Close">×</button>
+  <div class="dbody">
+    <h3 id="startHead">Let's talk</h3>
+    <div class="choices" id="choices"></div>
+    <form id="msgForm">
+      <b>Send me a message</b>
+      <label>Your name<input name="who" autocomplete="name" maxlength="80" required></label>
+      <label>What do you need?<select name="need"></select></label>
+      <label class="tick" id="meetRow"><input type="checkbox" name="meet"> I'd like to set up a meeting</label>
+      <div class="when" id="when" hidden><label>Preferred date<input type="date" name="date"></label><label>Preferred time<input type="time" name="time"></label></div>
+      <label>Message<textarea name="msg" rows="4" maxlength="1200" placeholder="Tell me about your video, length and deadline."></textarea></label>
+      <div class="actions"><button class="btn hot" type="submit" value="whatsapp" id="sendWa">Send on WhatsApp</button><button class="btn" type="submit" value="email" id="sendMail">Send by email</button></div>
+      <p class="hint" id="sendHint" role="status">Your app opens with the message ready. Press send there.</p>
+    </form>
+  </div>
+</dialog>
 
 <script>window.CAN_EMBED=true;</script>
 <script></script>
@@ -413,6 +466,82 @@ list("socials").forEach(x => {
   row(kind, x.label, x.text || (kind === "whatsapp" ? "WhatsApp" : x.url), url);
 });
 
+/* get started: booking link, project form, or a ready-written WhatsApp / email message */
+(function(){
+  const S = D.start || {}, sdlg = $("#startDlg"), form = $("#msgForm"), F = form.elements;
+  const meeting = web(S.meeting), brief = web(S.form);
+  const chat = list("socials").find(x => brand(x.label+" "+x.url) === "whatsapp");
+  let waUrl = "", waNumber = "";
+  if (chat) {
+    waUrl = web(chat.url);
+    if (!waUrl) { let n = (chat.url || chat.text || "").replace(/\D/g,""); if (/^01\d{9}$/.test(n)) n = "88"+n; if (n) waUrl = "https://wa.me/"+n; }
+    waNumber = (waUrl.match(/(?:wa\.me\/\+?|[?&]phone=\+?)(\d{6,})/)||[])[1] || "";
+  }
+  if (show.start === false || !(meeting || brief || waUrl || P.email)) return;
+  $("#start").hidden = false; $("#heroStart").hidden = false;
+  $("#ctaTitle").textContent = S.title || "Have a video in mind?";
+  $("#ctaText").textContent = S.text || "Tell me what you're making. Send a message or set up a meeting, whichever suits you.";
+  $("#ctaLabel").textContent = S.button || "Get Started Now";
+
+  function choice(url, icon, title, note){
+    const a = el("a","choice"), i = el("span","ico"), NS = "http://www.w3.org/2000/svg", s = document.createElementNS(NS,"svg"), p = document.createElementNS(NS,"path"), t = el("span"), go = el("i","","↗");
+    s.setAttribute("viewBox","0 0 24 24"); s.setAttribute("aria-hidden","true"); p.setAttribute("d",icon); s.append(p); i.append(s);
+    go.setAttribute("aria-hidden","true"); t.append(el("b","",title), el("small","",note));
+    a.href = url; a.target = "_blank"; a.rel = "noopener"; a.append(i,t,go); $("#choices").append(a);
+  }
+  if (meeting) choice(meeting, "M4 6h16v14H4zM4 10h16M8 3v5M16 3v5", "Book a meeting", "Pick a date and time that suits you");
+  if (brief) choice(brief, "M6 3h12v18H6zM9 8h6M9 12h6M9 16h3", "Fill in the project form", "Share your project details");
+
+  form.hidden = !(waUrl || P.email);
+  $("#sendWa").hidden = !waUrl; $("#sendMail").hidden = !P.email;
+  if (!waUrl) $("#sendMail").classList.add("hot");
+  [...types, "Something else"].forEach(n => F.need.append(el("option","",n)));
+  /* with a booking calendar there is no need to ask for a date here */
+  $("#meetRow").hidden = !!meeting;
+  const meetSync = () => {
+    const on = F.meet.checked && !meeting;
+    $("#when").hidden = !on; F.date.required = F.time.required = on; F.msg.required = !on;
+  };
+  F.meet.onchange = meetSync; meetSync();
+
+  const openStart = () => {
+    const d = new Date(), two = n => String(n).padStart(2,"0");
+    F.date.min = `${d.getFullYear()}-${two(d.getMonth()+1)}-${two(d.getDate())}`;
+    $("#sendHint").textContent = "Your app opens with the message ready. Press send there.";
+    sdlg.showModal();
+  };
+  $("#heroStart").onclick = openStart; $("#ctaStart").onclick = openStart;
+  $("#startClose").onclick = () => sdlg.close();
+  let downOutside = false; /* a text selection that ends outside must not close the form */
+  sdlg.addEventListener("pointerdown", e => downOutside = e.target === sdlg);
+  sdlg.addEventListener("click", e => { if (e.target === sdlg && downOutside) sdlg.close(); });
+
+  form.onsubmit = e => {
+    e.preventDefault();
+    const via = e.submitter && e.submitter.value === "email" || !waUrl ? "email" : "whatsapp";
+    const name = F.who.value.trim(), note = F.msg.value.trim();
+    const lines = [`Hi ${P.name}, I'm ${name}.`, `I need: ${F.need.value}`];
+    if (F.meet.checked && !meeting) {
+      const day = new Date(F.date.value+"T00:00").toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+      const [h,m] = F.time.value.split(":"), zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      lines.push(`Meeting request: ${day} at ${h%12 || 12}:${m} ${h < 12 ? "AM" : "PM"}${zone ? ` (${zone})` : ""}`);
+    }
+    if (note) lines.push("", note);
+    const text = lines.join("\n"), away = url => window.open(url, "_blank", "noopener");
+    if (via === "whatsapp") {
+      if (waNumber) away(`https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`);
+      else { /* short business links cannot carry text, so copy it for pasting */
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => $("#sendHint").textContent = "Your message is copied. Paste it in the chat and press send.").catch(() => {});
+        away(waUrl);
+      }
+    } else {
+      const subject = encodeURIComponent(`Project enquiry from ${name}`), body = encodeURIComponent(text);
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) location.href = `mailto:${P.email}?subject=${subject}&body=${body}`;
+      else away(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(P.email)}&su=${subject}&body=${body}`);
+    }
+  };
+})();
+
 const links = [...document.querySelectorAll(".links a")];
 function onScroll(){
   $(".top").classList.toggle("stuck", scrollY > 8);
@@ -433,7 +562,7 @@ if (!still && "IntersectionObserver" in window) {
     io.unobserve(e.target);
     e.target.animate([{opacity:.05,translate:"0 56px",scale:.94},{opacity:1,translate:"0 0",scale:1}],{duration:750,delay:i*90,easing:"cubic-bezier(.2,.9,.2,1)",fill:"backwards"});
   }), {threshold:.12});
-  document.querySelectorAll(".shead,.lead,.bio,.stats,.types,#panel,.svc,.step,.quote,.ctext,.crow,#contact .frame").forEach(e => { if (e.getBoundingClientRect().top >= innerHeight) io.observe(e); });
+  document.querySelectorAll(".shead,.lead,.bio,.stats,.types,#panel,.svc,.step,.quote,.ctext,.crow,.cta,#contact .frame").forEach(e => { if (e.getBoundingClientRect().top >= innerHeight) io.observe(e); });
 }
 
 /* mouse: a ring and soft light follow the pointer; the ring stretches while scrolling */
