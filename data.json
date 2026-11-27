@@ -200,5 +200,8 @@
     "process": true,
     "portrait": false,
     "stats": true
+  },
+  "start": {
+    "meeting": "https://calendly.com/mohammedjihad370/30min"
   }
 }
