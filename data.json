@@ -77,6 +77,16 @@
   ],
   "projects": [
     {
+      "title": "Talking Head",
+      "type": "EdTech",
+      "shape": "wide",
+      "video": "https://youtu.be/6JSPJuQwIrQ",
+      "image": "",
+      "client": "",
+      "role": "Edit ",
+      "about": ""
+    },
+    {
       "title": "Promotion",
       "type": "Commercial",
       "shape": "wide",
