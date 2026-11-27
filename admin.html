@@ -9,7 +9,7 @@
 <title>Portfolio Admin</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600&family=Hind+Siliguri:wght@400;500;600&family=Inter:wght@400;600&display=swap">
 <style>
-:root{--ink:#08060d;--coal:#110c1c;--coal2:#1a122b;--paper:#f3f0fa;--muted:#aca4c0;--line:rgba(167,139,250,.22);--amber:#6d28d9;--teal:#c4b5fd;--bad:#ff6b6b;color-scheme:dark}
+:root{--ink:#0a2c2a;--coal:#0f3d3a;--coal2:#16504c;--paper:#f5dabf;--muted:#cbbca7;--line:rgba(245,218,191,.22);--amber:#6c151e;--teal:#f5dabf;--bad:#ffa39a;color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--ink);color:var(--paper);font:400 16px/1.6 Inter,"Hind Siliguri",system-ui,sans-serif}
@@ -21,7 +21,7 @@ header{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-
 button,.button{font:600 .92rem Inter,"Hind Siliguri",sans-serif;border:1px solid var(--line);background:var(--coal2);color:var(--paper);border-radius:99px;padding:9px 18px;cursor:pointer;text-decoration:none}
 button:hover{border-color:var(--paper)}
 button:disabled{opacity:.5;cursor:default}
-button.hot{background:var(--amber);color:#fff;border-color:#7c3aed}
+button.hot{background:var(--amber);color:#fff;border-color:rgba(245,218,191,.45)}
 button.small{padding:5px 12px;font-size:.8rem}
 button.danger{color:var(--bad)}
 :focus-visible{outline:2px solid var(--teal);outline-offset:2px}
@@ -37,12 +37,12 @@ textarea{min-height:90px;resize:vertical}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .tabs button[aria-pressed=true]{background:var(--amber);border-color:var(--teal);color:#fff}
 .item{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
-.item img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:linear-gradient(135deg,#2e1065,#12081f)}
+.item img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:linear-gradient(135deg,#6c151e,#0a2c2a)}
 .item b{display:block;overflow-wrap:anywhere}
 .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:620px){.item{grid-template-columns:72px minmax(0,1fr)}.item img{width:72px;height:48px}.acts{grid-column:1/-1;justify-content:flex-start}}
 .row{border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
-.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(17,12,28,.97);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(15,61,58,.97);border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px))}
 .bar div{max-width:848px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
 #status{margin:0;font-size:.9rem;flex:1;min-width:200px}
 #status.bad{color:var(--bad)} #status.good{color:#5ee28a}
@@ -85,7 +85,7 @@ const $ = s => document.querySelector(s);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const btn = (text, fn, cls="small") => { const b = el("button",cls,text); b.type = "button"; b.onclick = fn; return b; };
 const KEY = "portfolio-admin";
-let D = null, auth = null, sha = null, dirty = false, tab = "projects", editing = null, busy = false;
+let D = null, auth = null, sha = null, dirty = false, tab = "projects", editing = null, busy = false, loaded = "", previews = new Map();
 
 const say = (t, kind="") => { $("#status").textContent = t; $("#status").className = kind; };
 const changed = () => { dirty = true; say(auth ? "পরিবর্তন হয়েছে। সাইটে দেখাতে “পাবলিশ করো” চাপুন।" : "পরিবর্তন হয়েছে। data.json ডাউনলোড করে GitHub-এ আপলোড করুন।"); };
@@ -123,7 +123,7 @@ async function login(creds, remember){
     const f = await gh(`/contents/data.json?ref=${encodeURIComponent(auth.branch)}`);
     sha = f.sha;
     const content = f.content || (await gh(`/git/blobs/${f.sha}`)).content; /* files over 1 MB */
-    D = normalise(JSON.parse(fromB64(content)));
+    D = normalise(JSON.parse(fromB64(content))); loaded = JSON.stringify(D);
     try {
       sessionStorage.setItem(KEY, JSON.stringify(auth));
       if (remember) localStorage.setItem(KEY, JSON.stringify(auth)); else localStorage.removeItem(KEY);
@@ -148,7 +148,13 @@ function start(){
 
 /* Uploaded pictures stay as data URIs until publish, then become files in assets/uploads/ */
 async function publish(){
-  if (busy) return; busy = true; $("#publish").disabled = true;
+  if (busy) return;
+  if (draftPending()) {
+    if (!commitDraft()) { tab = "projects"; const why = $("#status").textContent; render(); say(why,"bad"); return; }
+    editing = null; changed(); render();
+  }
+  if (JSON.stringify(D) === loaded) { dirty = false; say("কোনো নতুন পরিবর্তন নেই, তাই কিছু পাবলিশ করা হয়নি।","bad"); return; }
+  busy = true; $("#publish").disabled = true;
   try {
     const copy = JSON.parse(JSON.stringify(D)), slots = [];
     (function walk(o){ Object.keys(o).forEach(k => { const v = o[k]; if (typeof v === "string" && /^data:image\/(jpeg|png|webp);base64,/.test(v)) slots.push([o,k,v]); else if (v && typeof v === "object") walk(v); }); })(copy);
@@ -168,14 +174,13 @@ async function publish(){
     const res = await gh(`/contents/data.json`, {method:"PUT", body:JSON.stringify({message:"Update portfolio content", content:toB64(JSON.stringify(copy,null,2)+"\n"), sha, branch:auth.branch})});
     sha = res.content.sha;
     /* keep local previews working while GitHub Pages rebuilds */
-    dirty = false; say("পাবলিশ হয়েছে। ১–২ মিনিট পরে সাইট রিফ্রেশ করুন।","good");
+    dirty = false; say(`পাবলিশ হয়েছে। সাইটে প্রজেক্ট আছে ${copy.projects.length}টি। ১–২ মিনিট পরে সাইট রিফ্রেশ করুন।`,"good");
     previews = new Map([...previews, ...[...done].map(([data,path]) => [path,data])]);
-    D = copy; render();
+    D = copy; loaded = JSON.stringify(D); render();
   } catch (err) {
     say(err.status === 409 ? "অন্য জায়গা থেকে data.json বদলেছে। “data.json ডাউনলোড” দিয়ে ব্যাকআপ রেখে পেজ রিলোড করুন।" : err.message || "পাবলিশ হয়নি। ইন্টারনেট দেখে আবার চেষ্টা করুন।","bad");
   } finally { busy = false; $("#publish").disabled = false; }
 }
-let previews = new Map();
 $("#publish").onclick = publish;
 $("#download").onclick = () => {
   const a = el("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(D,null,2)],{type:"application/json"})); a.download = "data.json";
@@ -228,11 +233,28 @@ function rows(title, key, fields, addText, note){
 }
 
 /* ---------- tabs ---------- */
+/* true when the project form holds something that is not in the list yet */
+function draftPending(){
+  if (!editing) return false;
+  const p = editing.p;
+  if (editing.index == null) return ["title","video","image","client","role","about"].some(k => (p[k] || "").trim());
+  return JSON.stringify(p) !== JSON.stringify(D.projects[editing.index]);
+}
+function commitDraft(){
+  const p = editing.p;
+  p.title = (p.title || "").trim(); p.video = (p.video || "").trim();
+  if (/^[\w-]+(\.[\w-]+)+\/\S*$/.test(p.video)) p.video = "https://" + p.video; /* link pasted without https:// */
+  const missing = [!p.title && "প্রজেক্টের নাম", !p.type && "ধরন", !/^https?:\/\/\S+$/i.test(p.video) && "সঠিক ভিডিও লিংক"].filter(Boolean);
+  if (missing.length) { say(`প্রজেক্টটা যোগ হয়নি। বাকি আছে: ${missing.join(", ")}।`,"bad"); return false; }
+  if (editing.index == null) D.projects.unshift(p); else D.projects[editing.index] = p;
+  return true;
+}
 function projects(panel){
   const isNew = !editing || editing.index == null;
   if (!editing) editing = {index:null, p:{title:"",type:D.types[0]?.name || "",shape:"wide",video:"",image:"",client:"",role:"",about:""}};
   const p = editing.p, f = el("form","box");
   f.append(el("h2","",isNew ? "নতুন প্রজেক্ট যোগ করুন" : "প্রজেক্ট সম্পাদনা"));
+  f.addEventListener("input", () => { dirty = true; });
   const a = el("div","two");
   a.append(field("প্রজেক্টের নাম *", p.title, v => p.title = v), field("ধরন *", p.type, v => p.type = v, {options:D.types.map(t => [t.name,t.name])}));
   const b = el("div","two");
@@ -244,22 +266,16 @@ function projects(panel){
   const save = el("button","hot",isNew ? "তালিকায় যোগ করো" : "পরিবর্তন রাখো"); save.type = "submit"; acts.append(save);
   if (!isNew) acts.append(btn("বাতিল", () => { editing = null; render(); }, ""));
   f.append(acts);
-  f.onsubmit = e => {
-    e.preventDefault();
-    p.title = p.title.trim(); p.video = p.video.trim();
-    if (!p.title || !p.type || !/^https?:\/\/\S+$/i.test(p.video)) return say("নাম, ধরন আর https:// দিয়ে শুরু ভিডিও লিংক দিন।","bad");
-    if (editing.index == null) D.projects.unshift(p); else D.projects[editing.index] = p;
-    editing = null; changed(); render();
-  };
+  f.onsubmit = e => { e.preventDefault(); if (commitDraft()) { editing = null; changed(); render(); } };
   panel.append(f);
   const l = box(`আপনার প্রজেক্ট (${D.projects.length})`, D.projects.length ? "উপরের প্রজেক্ট সাইটে আগে দেখাবে।" : "এখনো কোনো প্রজেক্ট নেই। উপরের ফর্ম থেকে প্রথমটা যোগ করুন।");
   D.projects.forEach((x,i) => {
     const r = el("div","item"), im = el("img"); im.alt = ""; const source = pic(x.image) || ytThumb(x.video); if (source) im.src = source;
     const t = el("div"); t.append(el("b","",x.title), el("span","muted",`${x.type} · ${x.shape === "vertical" ? "লম্বা" : "আড়াআড়ি"}`));
     const acts = el("div","acts");
-    acts.append(btn("↑", () => { editing = null; move(D.projects,i,-1); }), btn("↓", () => { editing = null; move(D.projects,i,1); }),
+    acts.append(btn("↑", () => { if (editing.index != null) editing = null; move(D.projects,i,-1); }), btn("↓", () => { if (editing.index != null) editing = null; move(D.projects,i,1); }),
       btn("সম্পাদনা", () => { editing = {index:i, p:{...x}}; render(); scrollTo(0,0); }),
-      btn("মুছো", e => { const k = e.currentTarget; if (k.dataset.sure) { D.projects.splice(i,1); editing = null; changed(); render(); } else { k.dataset.sure = "1"; k.textContent = "নিশ্চিত?"; } }, "small danger"));
+      btn("মুছো", e => { const k = e.currentTarget; if (k.dataset.sure) { D.projects.splice(i,1); if (editing.index != null) editing = null; changed(); render(); } else { k.dataset.sure = "1"; k.textContent = "নিশ্চিত?"; } }, "small danger"));
     r.append(im,t,acts); l.append(r);
   });
   panel.append(l);
@@ -282,14 +298,14 @@ function types(panel){
     name.querySelector("input").onchange = e => {
       const v = e.target.value.trim();
       if (!v || D.types.some(o => o !== t && o.name === v)) { e.target.value = t.name; return say("নাম ফাঁকা বা একই নাম দুইবার হতে পারবে না।","bad"); }
-      D.projects.forEach(p => { if (p.type === t.name) p.type = v; }); t.name = v; editing = null; changed();
+      D.projects.forEach(p => { if (p.type === t.name) p.type = v; }); if (editing && editing.p.type === t.name) editing.p.type = v; t.name = v; changed();
     };
     const a = el("div","acts"); a.append(btn("↑", () => move(D.types,i,-1)), btn("↓", () => move(D.types,i,1)), btn("মুছো", () => {
       if (D.projects.some(p => p.type === t.name)) return say("এই ধরনে প্রজেক্ট আছে, তাই মোছা যাবে না।","bad");
-      D.types.splice(i,1); editing = null; changed(); render(); }, "small danger"));
+      D.types.splice(i,1); if (editing && editing.p.type === t.name) editing.p.type = D.types[0]?.name || ""; changed(); render(); }, "small danger"));
     r.append(name, a); b.append(r);
   });
-  const add = btn("+ নতুন ধরন", () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); editing = null; changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
+  const add = btn("+ নতুন ধরন", () => { let n = 1; while (D.types.some(t => t.name === `New type ${n}`)) n++; D.types.push({name:`New type ${n}`,image:""}); changed(); render(); }); add.style.justifySelf = "start"; b.append(add); panel.append(b);
 }
 function sections(panel){
   const v = box("কোন সেকশন দেখাবে");
